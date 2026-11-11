@@ -37,3 +37,4 @@ export function SearchInput({
     </div>
   );
 }
+

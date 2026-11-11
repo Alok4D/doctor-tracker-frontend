@@ -45,3 +45,4 @@ export function Logo({ className, isCollapsed = false, white = false }: LogoProp
     </Link>
   );
 }
+

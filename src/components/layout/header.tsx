@@ -71,3 +71,4 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
     </header>
   );
 }
+

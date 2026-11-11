@@ -15,3 +15,4 @@ export function DoctorSearch({ value, onChange }: DoctorSearchProps) {
     />
   );
 }
+

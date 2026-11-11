@@ -52,3 +52,4 @@ export function StatsCard({
     </div>
   );
 }
+

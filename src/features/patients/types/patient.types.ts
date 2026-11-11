@@ -20,3 +20,4 @@ export interface PatientFilterParams {
   page?: number;
   limit?: number;
 }
+

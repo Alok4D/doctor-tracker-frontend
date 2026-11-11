@@ -19,3 +19,4 @@ export interface DoctorWorkloadItem {
   name: string;
   patients: number;
 }
+

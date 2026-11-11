@@ -173,3 +173,4 @@ export function DoctorTable({
     </div>
   );
 }
+

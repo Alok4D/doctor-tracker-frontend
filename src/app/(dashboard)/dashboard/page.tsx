@@ -12,6 +12,7 @@ import { INITIAL_MOCK_PATIENTS } from "@/features/patients/services/patient-api"
 import { toast } from "sonner";
 
 export default function DashboardPage() {
+  
   const [timeframe, setTimeframe] = useState("last_week");
   const [doctors, setDoctors] = useState(INITIAL_MOCK_DOCTORS);
   const [patients, setPatients] = useState(INITIAL_MOCK_PATIENTS);
@@ -116,3 +117,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

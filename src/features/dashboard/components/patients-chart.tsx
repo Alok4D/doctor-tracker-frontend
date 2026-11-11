@@ -77,3 +77,4 @@ export function PatientsChart({ data, totalPatients }: PatientsChartProps) {
     </div>
   );
 }
+

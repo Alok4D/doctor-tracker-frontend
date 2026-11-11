@@ -32,3 +32,4 @@ export function MobileSidebar({ open, onClose }: MobileSidebarProps) {
     </div>
   );
 }
+

@@ -80,3 +80,4 @@ export function DoctorsChart({ data }: DoctorsChartProps) {
     </div>
   );
 }
+

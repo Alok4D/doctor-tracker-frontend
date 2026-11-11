@@ -15,3 +15,4 @@ export function PatientSearch({ value, onChange }: PatientSearchProps) {
     />
   );
 }
+

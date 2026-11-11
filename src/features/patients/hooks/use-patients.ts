@@ -104,3 +104,4 @@ export function usePatients(initialDoctorId?: string) {
     removePatient,
   };
 }
+

@@ -18,3 +18,4 @@ export function usePagination(initialPage = 1, initialLimit = 10) {
     goToPage,
   };
 }
+

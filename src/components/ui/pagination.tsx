@@ -84,3 +84,4 @@ export function Pagination({
     </nav>
   );
 }
+

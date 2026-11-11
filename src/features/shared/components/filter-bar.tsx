@@ -13,3 +13,4 @@ export function FilterBar({ children, className }: FilterBarProps) {
     </div>
   );
 }
+

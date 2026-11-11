@@ -18,3 +18,4 @@ export function DataTableToolbar({ children, className }: DataTableToolbarProps)
     </div>
   );
 }
+

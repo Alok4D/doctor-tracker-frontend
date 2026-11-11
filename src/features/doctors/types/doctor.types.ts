@@ -18,3 +18,4 @@ export interface DoctorFilterParams {
   page?: number;
   limit?: number;
 }
+
