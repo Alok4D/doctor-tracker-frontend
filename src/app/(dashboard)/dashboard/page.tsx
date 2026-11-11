@@ -1,120 +1,173 @@
 "use client";
 
 import { useState } from "react";
-import { Users, UserCheck, Calendar, Receipt, LayoutGrid } from "lucide-react";
+import {
+  UserCheck,
+  Users,
+  Calendar,
+  CheckCircle2,
+  CalendarDays,
+} from "lucide-react";
 import { StatsCard } from "@/features/dashboard/components/stats-card";
-import { PatientsChart } from "@/features/dashboard/components/patients-chart";
-import { DoctorsChart } from "@/features/dashboard/components/doctors-chart";
-import { RecentTables } from "@/features/dashboard/components/recent-patients";
-import { DashboardHeaderControls } from "@/features/dashboard/components/date-filter";
-import { INITIAL_MOCK_DOCTORS } from "@/features/doctors/services/doctor-api";
-import { INITIAL_MOCK_PATIENTS } from "@/features/patients/services/patient-api";
-import { toast } from "sonner";
+import { PatientsOverviewChart } from "@/features/dashboard/components/patients-chart";
+import { DoctorsBySpecialtyChart } from "@/features/dashboard/components/doctors-chart";
+import { RecentPatientsAndActions } from "@/features/dashboard/components/recent-patients";
+import { DoctorDialog } from "@/features/doctors/components/doctor-dialog";
+import { PatientDialog } from "@/features/patients/components/patient-dialog";
+import { useDoctors } from "@/features/doctors/hooks/use-doctors";
+import { usePatients } from "@/features/patients/hooks/use-patients";
 
 export default function DashboardPage() {
-  
-  const [timeframe, setTimeframe] = useState("last_week");
-  const [doctors, setDoctors] = useState(INITIAL_MOCK_DOCTORS);
-  const [patients, setPatients] = useState(INITIAL_MOCK_PATIENTS);
+  const [timeRange, setTimeRange] = useState("Last 30 Days");
+  const [isAddDoctorOpen, setIsAddDoctorOpen] = useState(false);
+  const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
 
-  const patientBreakdown = [
-    { name: "Admitted", value: 1340, color: "#2563eb" },
-    { name: "Discharged", value: 1550, color: "#94a3b8" },
-    { name: "Transferred", value: 85, color: "#64748b" },
-    { name: "Followup", value: 575, color: "#38bdf8" },
+  const { addDoctor } = useDoctors();
+  const { addPatient } = usePatients();
+
+  // Wave sparkline data for 4 KPI cards matching the screenshot
+  const sparklineDoctors = [
+    { v: 16 },
+    { v: 18 },
+    { v: 21 },
+    { v: 19 },
+    { v: 22 },
+    { v: 20 },
+    { v: 24 },
   ];
-
-  const workloadData = [
-    { name: "Doctors", patients: 680 },
-    { name: "Nurses", patients: 590 },
-    { name: "Volunteers", patients: 1600 },
-    { name: "Pharmacists", patients: 1400 },
-    { name: "Dietitians", patients: 580 },
-    { name: "Others", patients: 190 },
+  const sparklinePatients = [
+    { v: 920 },
+    { v: 990 },
+    { v: 1040 },
+    { v: 1010 },
+    { v: 1140 },
+    { v: 1190 },
+    { v: 1250 },
   ];
-
-  const handleDeleteDoctor = (id: string) => {
-    setDoctors((prev) => prev.filter((d) => d.id !== id));
-    toast.success("Doctor record deleted");
-  };
-
-  const handleDeletePatient = (id: string) => {
-    setPatients((prev) => prev.filter((p) => p.id !== id));
-    toast.success("Patient record deleted");
-  };
-
-  const handleExport = () => {
-    toast.info("Exporting hospital overview report (CSV)...");
-  };
+  const sparklineAppointments = [
+    { v: 680 },
+    { v: 740 },
+    { v: 710 },
+    { v: 800 },
+    { v: 830 },
+    { v: 870 },
+    { v: 892 },
+  ];
+  const sparklineActive = [
+    { v: 18 },
+    { v: 19 },
+    { v: 21 },
+    { v: 20 },
+    { v: 22 },
+    { v: 21 },
+    { v: 22 },
+  ];
 
   return (
     <div className="space-y-6">
-      {/* Top Header Bar matching user's image */}
+      {/* Header Greeting matching user's image */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <LayoutGrid className="h-5 w-5 text-blue-600" />
-          <h1 className="text-lg font-bold text-slate-900 tracking-tight">
-            Dashboard Overview
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+            <span>Dashboard</span>
+            <span className="text-xl">👋</span>
           </h1>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Welcome back! Here&apos;s what&apos;s happening with your healthcare system today.
+          </p>
         </div>
 
-        <DashboardHeaderControls
-          timeframe={timeframe}
-          onTimeframeChange={setTimeframe}
-          onExport={handleExport}
-        />
+        {/* Date Filter Dropdown */}
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <div className="flex items-center gap-2 h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 shadow-2xs">
+              <CalendarDays className="h-4 w-4 text-slate-500" />
+              <select
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+                className="bg-transparent focus:outline-none cursor-pointer pr-2"
+              >
+                <option>Last 30 Days</option>
+                <option>Last 7 Days</option>
+                <option>This Month</option>
+                <option>This Year</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Row 1: 4 KPI Stats Cards */}
+      {/* Row 1: 4 Colored KPI Cards with Sparklines matching image */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard
-          title="Total Patients"
-          value="3,550"
-          change="+150% vs past month"
-          isPositive={true}
-          icon={Users}
-        />
+        {/* Card 1: Total Doctors (Blue) */}
         <StatsCard
           title="Total Doctors"
-          value="100"
-          change="+20% vs past month"
-          isPositive={true}
+          value="24"
+          change="↑ 12%"
           icon={UserCheck}
+          sparklineData={sparklineDoctors}
+          theme="blue"
         />
+
+        {/* Card 2: Total Patients (Green) */}
+        <StatsCard
+          title="Total Patients"
+          value="1,250"
+          change="↑ 8%"
+          icon={Users}
+          sparklineData={sparklinePatients}
+          theme="emerald"
+        />
+
+        {/* Card 3: Appointments (Purple) */}
         <StatsCard
           title="Appointments"
-          value="1,079"
-          change="-5% vs past month"
-          isPositive={false}
+          value="892"
+          change="↑ 15%"
           icon={Calendar}
+          sparklineData={sparklineAppointments}
+          theme="purple"
         />
+
+        {/* Card 4: Active Doctors (Orange) */}
         <StatsCard
-          title="Total Earnings"
-          value="$55,000"
-          change="+220% vs past month"
-          isPositive={true}
-          icon={Receipt}
+          title="Active Doctors"
+          value="22"
+          change="↑ 5%"
+          icon={CheckCircle2}
+          sparklineData={sparklineActive}
+          theme="orange"
         />
       </div>
 
-      {/* Row 2: Analytics & Charts */}
+      {/* Row 2: Charts (Patients Overview on left + Doctors by Specialty on right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-        <div className="lg:col-span-5">
-          <PatientsChart data={patientBreakdown} totalPatients={3550} />
-        </div>
         <div className="lg:col-span-7">
-          <DoctorsChart data={workloadData} />
+          <PatientsOverviewChart />
+        </div>
+        <div className="lg:col-span-5">
+          <DoctorsBySpecialtyChart />
         </div>
       </div>
 
-      {/* Row 3: Quick Tables matching design image */}
-      <RecentTables
-        doctors={doctors}
-        patients={patients}
-        onDeleteDoctor={handleDeleteDoctor}
-        onDeletePatient={handleDeletePatient}
+      {/* Row 3: Recent Patients & Quick Actions matching image */}
+      <RecentPatientsAndActions
+        onAddDoctorClick={() => setIsAddDoctorOpen(true)}
+        onAddPatientClick={() => setIsAddPatientOpen(true)}
+      />
+
+      {/* Interactive Dialogs */}
+      <DoctorDialog
+        open={isAddDoctorOpen}
+        onOpenChange={setIsAddDoctorOpen}
+        onSubmit={addDoctor}
+      />
+
+      <PatientDialog
+        open={isAddPatientOpen}
+        onOpenChange={setIsAddPatientOpen}
+        onSubmit={addPatient}
       />
     </div>
   );
 }
-
