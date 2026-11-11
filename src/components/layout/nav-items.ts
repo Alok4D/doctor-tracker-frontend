@@ -24,11 +24,3 @@ export const primaryNavItems: NavItem[] = [
   },
 ];
 
-export const secondaryNavItems: NavItem[] = [
-  {
-    title: "Settings",
-    href: "/dashboard#settings",
-    icon: Settings,
-  },
-];
-

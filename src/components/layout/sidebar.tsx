@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, ChevronRight } from "lucide-react";
-import { primaryNavItems, secondaryNavItems } from "./nav-items";
+import { primaryNavItems } from "./nav-items";
 import { Logo } from "../shared/logo";
 import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store/hooks";
