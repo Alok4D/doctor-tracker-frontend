@@ -34,8 +34,8 @@ export function usePatients(initialDoctorId?: string) {
   const [updatePatientMutation] = useUpdatePatientMutation();
   const [deletePatientMutation] = useDeletePatientMutation();
 
-  const patients = data?.data?.data || [];
-  const meta = data?.data?.meta;
+  const patients = data?.data || [];
+  const meta = data?.meta;
   const total = meta?.total ?? patients.length;
   const totalPages = meta?.totalPage ?? 1;
 

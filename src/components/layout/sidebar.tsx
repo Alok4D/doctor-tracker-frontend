@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, X, ChevronRight, Activity } from "lucide-react";
+import { LogOut, X, ChevronRight, Activity, Loader } from "lucide-react";
 import { primaryNavItems } from "./nav-items";
 import { cn } from "@/lib/utils";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout } from "@/lib/slice/auth/authSlice";
+import { useLogoutMutation } from "@/lib/feature/auth/authApi";
+import baseApi from "@/lib/api/baseApi";
 import { toast } from "sonner";
 
 interface SidebarProps {
@@ -25,11 +27,19 @@ export function Sidebar({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
+  const [logoutMutation, { isLoading: isLoggingOut }] = useLogoutMutation();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    toast.success("Logged out successfully");
-    router.push("/login");
+  const handleLogout = async () => {
+    try {
+      await logoutMutation().unwrap();
+      toast.success("Logged out successfully");
+    } catch {
+      toast.success("Logged out successfully");
+    } finally {
+      dispatch(logout());
+      dispatch(baseApi.util.resetApiState());
+      router.push("/login");
+    }
   };
 
   return (
@@ -150,17 +160,24 @@ export function Sidebar({
 
           <button
             onClick={handleLogout}
+            disabled={isLoggingOut}
             title={!isMobileOpen && isCollapsed ? "Log out" : undefined}
             className={cn(
-              "flex items-center text-blue-100 rounded-lg border border-blue-500/60 bg-blue-700/50 hover:bg-blue-700 hover:text-white hover:border-blue-400/80 transition-all w-full shadow-xs",
+              "flex items-center text-blue-100 rounded-lg border border-blue-500/60 bg-blue-700/50 hover:bg-blue-700 hover:text-white hover:border-blue-400/80 transition-all w-full shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
               !isMobileOpen && isCollapsed
                 ? "justify-center p-2.5 h-10"
                 : "justify-center px-4 py-2.5 h-10 text-sm font-medium"
             )}
           >
-            <LogOut className="w-4 h-4 shrink-0" />
+            {isLoggingOut ? (
+              <Loader className="w-4 h-4 shrink-0 animate-spin" />
+            ) : (
+              <LogOut className="w-4 h-4 shrink-0" />
+            )}
             {(!isCollapsed || isMobileOpen) && (
-              <span className="ml-2 font-medium truncate">Log out</span>
+              <span className="ml-2 font-medium truncate">
+                {isLoggingOut ? "Logging out..." : "Log out"}
+              </span>
             )}
           </button>
         </div>

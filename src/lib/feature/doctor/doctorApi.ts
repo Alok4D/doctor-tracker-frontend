@@ -5,14 +5,13 @@ import {
   IDoctorFilterParams,
   ICreateDoctorPayload,
   IUpdateDoctorPayload,
-  IDoctorListResponse,
-  IDoctorPatientsResponse,
 } from "@/types/doctor.types";
+import { IPatient } from "@/types/patient.types";
 
 export const doctorApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // GET All Doctors with Filtering & Pagination
-    getDoctors: builder.query<ApiResponse<IDoctorListResponse>, IDoctorFilterParams | void>({
+    getDoctors: builder.query<ApiResponse<IDoctor[]>, IDoctorFilterParams | void>({
       query: (params) => {
         const queryParams = new URLSearchParams();
         if (params) {
@@ -36,17 +35,20 @@ export const doctorApi = baseApi.injectEndpoints({
       providesTags: ["Doctor"],
     }),
 
-    // GET Single Doctor by ID
-    getDoctorById: builder.query<ApiResponse<IDoctor>, string>({
+    // GET Single Doctor by ID (returns { doctor, patients, patientCount })
+    getDoctorById: builder.query<
+      ApiResponse<{ doctor: IDoctor; patients: IPatient[]; patientCount: number }>,
+      string
+    >({
       query: (id) => ({
         url: `/doctors/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Doctor", id }, "Doctor"],
+      providesTags: (result, error, id) => [{ type: "Doctor", id }, "Doctor", "Patient"],
     }),
 
     // GET Doctor's Assigned Patients
-    getDoctorPatients: builder.query<ApiResponse<IDoctorPatientsResponse>, string>({
+    getDoctorPatients: builder.query<ApiResponse<IPatient[]>, string>({
       query: (id) => ({
         url: `/doctors/${id}/patients`,
         method: "GET",
@@ -65,7 +67,10 @@ export const doctorApi = baseApi.injectEndpoints({
     }),
 
     // PATCH Update Doctor
-    updateDoctor: builder.mutation<ApiResponse<IDoctor>, { id: string; body: IUpdateDoctorPayload }>({
+    updateDoctor: builder.mutation<
+      ApiResponse<IDoctor>,
+      { id: string; body: IUpdateDoctorPayload }
+    >({
       query: ({ id, body }) => ({
         url: `/doctors/${id}`,
         method: "PATCH",
@@ -84,7 +89,10 @@ export const doctorApi = baseApi.injectEndpoints({
     }),
 
     // POST Assign Patient to Doctor
-    assignPatientToDoctor: builder.mutation<ApiResponse<any>, { doctorId: string; patientId: string }>({
+    assignPatientToDoctor: builder.mutation<
+      ApiResponse<any>,
+      { doctorId: string; patientId: string }
+    >({
       query: ({ doctorId, patientId }) => ({
         url: `/doctors/${doctorId}/patients`,
         method: "POST",
@@ -94,7 +102,10 @@ export const doctorApi = baseApi.injectEndpoints({
     }),
 
     // DELETE Remove Patient from Doctor
-    removePatientFromDoctor: builder.mutation<ApiResponse<any>, { doctorId: string; patientId: string }>({
+    removePatientFromDoctor: builder.mutation<
+      ApiResponse<any>,
+      { doctorId: string; patientId: string }
+    >({
       query: ({ doctorId, patientId }) => ({
         url: `/doctors/${doctorId}/patients/${patientId}`,
         method: "DELETE",
@@ -115,4 +126,3 @@ export const {
   useAssignPatientToDoctorMutation,
   useRemovePatientFromDoctorMutation,
 } = doctorApi;
-

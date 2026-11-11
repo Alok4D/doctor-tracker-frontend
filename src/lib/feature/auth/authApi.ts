@@ -1,4 +1,5 @@
 import baseApi from "@/lib/api/baseApi";
+import { ApiResponse } from "@/types/api.types";
 import {
   LoginPayload,
   LoginResponse,
@@ -25,10 +26,18 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+
+    // POST Logout Mutation
+    logout: builder.mutation<ApiResponse<null>, void>({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
   overrideExisting: true,
 });
 
 // Export auto-generated hooks
-export const { useLoginMutation, useGetMeQuery } = authApi;
-
+export const { useLoginMutation, useGetMeQuery, useLogoutMutation } = authApi;

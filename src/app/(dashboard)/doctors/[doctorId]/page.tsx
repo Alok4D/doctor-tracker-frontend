@@ -4,7 +4,7 @@ import { use } from "react";
 import { useRouter } from "next/navigation";
 import { PatientFormData } from "@/features/patients/schemas/patient.schema";
 import {
-  useGetDoctorPatientsQuery,
+  useGetDoctorByIdQuery,
 } from "@/lib/feature/doctor/doctorApi";
 import {
   useCreatePatientMutation,
@@ -24,7 +24,7 @@ export default function DoctorProfilePage({
   const router = useRouter();
   const { doctorId } = use(params);
 
-  const { data, isLoading, error } = useGetDoctorPatientsQuery(doctorId);
+  const { data, isLoading, error } = useGetDoctorByIdQuery(doctorId);
   const [createPatientMutation] = useCreatePatientMutation();
   const [deletePatientMutation] = useDeletePatientMutation();
 

@@ -2,7 +2,11 @@
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { loginSuccess, logout } from "@/lib/slice/auth/authSlice";
-import { useLoginMutation, useGetMeQuery } from "@/lib/feature/auth/authApi";
+import {
+  useLoginMutation,
+  useLogoutMutation,
+} from "@/lib/feature/auth/authApi";
+import baseApi from "@/lib/api/baseApi";
 import { LoginPayload } from "@/types/auth.types";
 
 export function useAuth() {
@@ -11,6 +15,7 @@ export function useAuth() {
     (state) => state.auth
   );
   const [loginMutation, { isLoading }] = useLoginMutation();
+  const [logoutMutation, { isLoading: isLoggingOut }] = useLogoutMutation();
 
   const loginUser = async (credentials: LoginPayload) => {
     try {
@@ -35,8 +40,15 @@ export function useAuth() {
     }
   };
 
-  const logoutUser = () => {
-    dispatch(logout());
+  const logoutUser = async () => {
+    try {
+      await logoutMutation().unwrap();
+    } catch {
+      // Proceed to clear local session regardless of backend error
+    } finally {
+      dispatch(logout());
+      dispatch(baseApi.util.resetApiState());
+    }
   };
 
   return {
@@ -44,6 +56,7 @@ export function useAuth() {
     token,
     isAuthenticated,
     isLoading,
+    isLoggingOut,
     loginUser,
     logoutUser,
   };

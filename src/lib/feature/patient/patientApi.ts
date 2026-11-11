@@ -5,13 +5,12 @@ import {
   IPatientFilterParams,
   ICreatePatientPayload,
   IUpdatePatientPayload,
-  IPatientListResponse,
 } from "@/types/patient.types";
 
 export const patientApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // GET All Patients with Filtering & Pagination
-    getPatients: builder.query<ApiResponse<IPatientListResponse>, IPatientFilterParams | void>({
+    getPatients: builder.query<ApiResponse<IPatient[]>, IPatientFilterParams | void>({
       query: (params) => {
         const queryParams = new URLSearchParams();
         if (params) {
@@ -57,13 +56,21 @@ export const patientApi = baseApi.injectEndpoints({
     }),
 
     // PATCH Update Patient
-    updatePatient: builder.mutation<ApiResponse<IPatient>, { id: string; body: IUpdatePatientPayload }>({
+    updatePatient: builder.mutation<
+      ApiResponse<IPatient>,
+      { id: string; body: IUpdatePatientPayload }
+    >({
       query: ({ id, body }) => ({
         url: `/patients/${id}`,
         method: "PATCH",
         body,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Patient", id }, "Patient", "Doctor", "Dashboard"],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Patient", id },
+        "Patient",
+        "Doctor",
+        "Dashboard",
+      ],
     }),
 
     // DELETE Patient
@@ -85,4 +92,3 @@ export const {
   useUpdatePatientMutation,
   useDeletePatientMutation,
 } = patientApi;
-

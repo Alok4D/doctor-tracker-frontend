@@ -22,7 +22,7 @@ export function PatientFilters({
   onStatusChange,
 }: PatientFiltersProps) {
   const { data: doctorsData } = useGetDoctorsQuery({ limit: 100 });
-  const doctorsList = doctorsData?.data?.data || [];
+  const doctorsList = doctorsData?.data || [];
 
   return (
     <div className="flex flex-wrap items-center gap-2">

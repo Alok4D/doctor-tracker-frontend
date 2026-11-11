@@ -28,8 +28,8 @@ export function useDoctors() {
   const [createDoctorMutation] = useCreateDoctorMutation();
   const [deleteDoctorMutation] = useDeleteDoctorMutation();
 
-  const doctors = data?.data?.data || [];
-  const meta = data?.data?.meta;
+  const doctors = data?.data || [];
+  const meta = data?.meta;
   const total = meta?.total ?? doctors.length;
   const totalPages = meta?.totalPage ?? 1;
 

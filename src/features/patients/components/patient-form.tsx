@@ -25,7 +25,7 @@ export function PatientForm({
   isLoading = false,
 }: PatientFormProps) {
   const { data: doctorsData } = useGetDoctorsQuery({ limit: 100 });
-  const doctorsList = doctorsData?.data?.data || [];
+  const doctorsList = doctorsData?.data || [];
 
   const defaultDoctorId =
     lockedDoctorId ||

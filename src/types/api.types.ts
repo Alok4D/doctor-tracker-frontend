@@ -15,9 +15,18 @@ export interface PaginatedResponse<T> {
   };
 }
 
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPage: number;
+}
+
 export interface ApiResponse<T = unknown> {
+  statusCode?: number;
   success: boolean;
   message: string;
+  meta?: PaginationMeta;
   data: T;
 }
 

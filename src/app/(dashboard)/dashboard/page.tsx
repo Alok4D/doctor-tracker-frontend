@@ -54,8 +54,8 @@ export default function DashboardPage() {
   const [deletePatient] = useDeletePatientMutation();
 
   const stats = statsData?.data;
-  const topDoctors = doctorsData?.data?.data || [];
-  const recentPatients = patientsData?.data?.data || [];
+  const topDoctors = doctorsData?.data || [];
+  const recentPatients = patientsData?.data || [];
 
   // Sparkline data
   const sparklineDoctors = [
