@@ -84,12 +84,6 @@ export function Sidebar({
 
         {/* Navigation Items */}
         <div className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto overflow-x-hidden">
-          {(!isCollapsed || isMobileOpen) && (
-            <p className="px-3 text-[11px] font-semibold text-blue-200/80 tracking-wide mb-2">
-              Main navigation
-            </p>
-          )}
-
           {primaryNavItems.map((item) => {
             const isActive =
               item.href === "/dashboard"
