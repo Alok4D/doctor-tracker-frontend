@@ -1,9 +1,10 @@
 "use client";
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { Stethoscope } from "lucide-react";
+import { Stethoscope, Loader } from "lucide-react";
+import { useGetSpecialtyBreakdownQuery } from "@/lib/feature/dashboard/dashboardApi";
 
-const specialtyData = [
+const defaultSpecialtyData = [
   { name: "Cardiology", count: 6, percentage: "25%", color: "#2563eb" },
   { name: "Neurology", count: 5, percentage: "21%", color: "#10b981" },
   { name: "Pediatrics", count: 5, percentage: "21%", color: "#a855f7" },
@@ -11,8 +12,16 @@ const specialtyData = [
 ];
 
 export function DoctorsBySpecialtyChart() {
-  
-  const totalDoctors = specialtyData.reduce((acc, curr) => acc + curr.count, 0);
+  const { data, isLoading } = useGetSpecialtyBreakdownQuery();
+
+  const specialtyData =
+    data?.data?.breakdown && data.data.breakdown.length > 0
+      ? data.data.breakdown
+      : defaultSpecialtyData;
+
+  const totalDoctors =
+    data?.data?.totalDoctors ||
+    specialtyData.reduce((acc, curr) => acc + curr.count, 0);
 
   return (
     <div className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs flex flex-col justify-between h-full">
@@ -24,7 +33,12 @@ export function DoctorsBySpecialtyChart() {
         <h3 className="text-sm font-bold text-slate-900">Doctors by Specialty</h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-12 items-center gap-4 py-4">
+      <div className="grid grid-cols-1 sm:grid-cols-12 items-center gap-4 py-4 relative">
+        {isLoading && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60">
+            <Loader className="h-6 w-6 animate-spin text-blue-600" />
+          </div>
+        )}
         {/* Donut Chart with Centered Total */}
         <div className="sm:col-span-6 relative h-48 w-full flex items-center justify-center">
           <ResponsiveContainer width="100%" height="100%">
@@ -67,10 +81,15 @@ export function DoctorsBySpecialtyChart() {
                   className="h-2.5 w-2.5 rounded-full shrink-0"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="font-medium text-slate-700">{item.name}</span>
+                <span className="text-slate-600 truncate max-w-[110px]">
+                  {item.name}
+                </span>
               </div>
-              <span className="font-semibold text-slate-600">
-                {item.count} ({item.percentage})
+              <span className="font-semibold text-slate-900">
+                {item.count}{" "}
+                <span className="text-[11px] font-normal text-slate-400">
+                  ({item.percentage})
+                </span>
               </span>
             </div>
           ))}

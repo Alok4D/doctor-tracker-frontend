@@ -1,7 +1,8 @@
 "use client";
 
-import { Trash2, Edit2, Phone, Calendar } from "lucide-react";
-import { Patient } from "../types/patient.types";
+import Link from "next/link";
+import { Trash2, Edit2, Phone, Calendar, ExternalLink } from "lucide-react";
+import { IPatient } from "@/types/patient.types";
 import {
   Table,
   TableBody,
@@ -15,9 +16,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
 
 interface PatientTableProps {
-  patients: Patient[];
+  patients: IPatient[];
   isLoading?: boolean;
-  onEdit?: (patient: Patient) => void;
+  onEdit?: (patient: IPatient) => void;
   onDelete: (id: string) => void;
   onAddNew?: () => void;
   showDoctorColumn?: boolean;
@@ -52,7 +53,7 @@ export function PatientTable({
     );
   }
 
-  const getStatusVariant = (status: Patient["status"]) => {
+  const getStatusVariant = (status: IPatient["status"]) => {
     switch (status) {
       case "Admitted":
         return "default";
@@ -83,107 +84,127 @@ export function PatientTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {patients.map((patient) => (
-            <TableRow key={patient.id}>
-              {/* Patient Avatar + Name */}
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-700 shrink-0 overflow-hidden">
-                    {patient.avatarUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={patient.avatarUrl}
-                        alt={patient.name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      patient.name.slice(0, 2).toUpperCase()
-                    )}
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-medium text-slate-900">
-                      {patient.name}
-                    </span>
-                    <span className="text-[11px] text-slate-400">
-                      {patient.id}
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
+          {patients.map((patient) => {
+            const id = patient._id;
+            const doctorName =
+              typeof patient.doctorId === "object" && patient.doctorId !== null
+                ? (patient.doctorId as any).name
+                : "Assigned Doctor";
 
-              {/* Age & Gender */}
-              <TableCell>
-                <span className="text-xs text-slate-700 font-medium">
-                  {patient.age} yrs, {patient.gender}
-                </span>
-              </TableCell>
-
-              {/* Condition */}
-              <TableCell>
-                <span className="text-xs font-medium text-slate-800">
-                  {patient.condition}
-                </span>
-              </TableCell>
-
-              {/* Assigned Doctor */}
-              {showDoctorColumn && (
+            return (
+              <TableRow key={id}>
+                {/* Patient Avatar + Name */}
                 <TableCell>
-                  <span className="inline-flex items-center rounded-md px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200/50">
-                    {patient.doctorName || "Assigned Doctor"}
+                  <div className="flex items-center gap-3">
+                    <div className="h-9 w-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-700 shrink-0 overflow-hidden">
+                      {patient.avatarUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={patient.avatarUrl}
+                          alt={patient.name}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        patient.name.slice(0, 2).toUpperCase()
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <Link
+                        href={`/patients/${id}`}
+                        className="font-medium text-slate-900 hover:text-blue-600 transition-colors flex items-center gap-1 group"
+                      >
+                        <span>{patient.name}</span>
+                        <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </Link>
+                      <span className="text-[11px] text-slate-400">
+                        ID: {id.slice(-6)}
+                      </span>
+                    </div>
+                  </div>
+                </TableCell>
+
+                {/* Age & Gender */}
+                <TableCell>
+                  <span className="text-xs text-slate-700 font-medium">
+                    {patient.age} yrs, {patient.gender}
                   </span>
                 </TableCell>
-              )}
 
-              {/* Contact */}
-              <TableCell>
-                <span className="inline-flex items-center gap-1.5 text-xs text-slate-600">
-                  <Phone className="h-3 w-3 text-slate-400" />
-                  {patient.phone}
-                </span>
-              </TableCell>
+                {/* Condition */}
+                <TableCell>
+                  <span className="text-xs font-medium text-slate-800">
+                    {patient.condition}
+                  </span>
+                </TableCell>
 
-              {/* Admission Date */}
-              <TableCell>
-                <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
-                  <Calendar className="h-3 w-3 text-slate-400" />
-                  {patient.admissionDate}
-                </span>
-              </TableCell>
+                {/* Assigned Doctor */}
+                {showDoctorColumn && (
+                  <TableCell>
+                    <span className="inline-flex items-center rounded-md px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200/50">
+                      {doctorName}
+                    </span>
+                  </TableCell>
+                )}
 
-              {/* Status */}
-              <TableCell>
-                <Badge variant={getStatusVariant(patient.status)}>
-                  <span className="h-1.5 w-1.5 rounded-full bg-current opacity-70" />
-                  <span>{patient.status}</span>
-                </Badge>
-              </TableCell>
+                {/* Contact */}
+                <TableCell>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-slate-600">
+                    <Phone className="h-3 w-3 text-slate-400" />
+                    {patient.phone}
+                  </span>
+                </TableCell>
 
-              {/* Actions */}
-              <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-1">
-                  {onEdit && (
-                    <button
-                      onClick={() => onEdit(patient)}
+                {/* Admission Date */}
+                <TableCell>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+                    <Calendar className="h-3 w-3 text-slate-400" />
+                    {patient.admissionDate || (patient.createdAt ? new Date(patient.createdAt).toLocaleDateString() : "Recent")}
+                  </span>
+                </TableCell>
+
+                {/* Status */}
+                <TableCell>
+                  <Badge variant={getStatusVariant(patient.status)}>
+                    <span className="h-1.5 w-1.5 rounded-full bg-current opacity-70" />
+                    <span>{patient.status}</span>
+                  </Badge>
+                </TableCell>
+
+                {/* Actions */}
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <Link
+                      href={`/patients/${id}`}
                       className="rounded-md p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-                      title="Edit patient"
+                      title="View details"
                     >
-                      <Edit2 className="h-4 w-4" />
+                      <ExternalLink className="h-4 w-4" />
+                    </Link>
+                    {onEdit && (
+                      <button
+                        type="button"
+                        onClick={() => onEdit(patient)}
+                        className="rounded-md p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer"
+                        title="Edit patient"
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => onDelete(id)}
+                      className="rounded-md p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                      title="Delete patient"
+                    >
+                      <Trash2 className="h-4 w-4" />
                     </button>
-                  )}
-                  <button
-                    onClick={() => onDelete(patient.id)}
-                    className="rounded-md p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                    title="Delete patient"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
   );
 }
-

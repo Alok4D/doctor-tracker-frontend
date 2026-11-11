@@ -1,23 +1,5 @@
-export interface Patient {
-  id: string;
-  name: string;
-  age: number;
-  gender: "Male" | "Female" | "Other";
-  condition: string;
-  phone: string;
-  doctorId: string;
-  doctorName?: string;
-  status: "Admitted" | "Discharged" | "Followup" | "Transferred";
-  admissionDate: string;
-  avatarUrl?: string;
-}
+import { IPatient, IPatientFilterParams } from "@/types/patient.types";
 
-export interface PatientFilterParams {
-  search?: string;
-  condition?: string;
-  doctorId?: string;
-  status?: string;
-  page?: number;
-  limit?: number;
-}
-
+export type Patient = IPatient;
+export type PatientFilterParams = IPatientFilterParams;
+export * from "@/types/patient.types";

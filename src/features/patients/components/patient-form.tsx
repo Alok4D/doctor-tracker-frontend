@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { PATIENT_CONDITIONS, GENDERS } from "@/lib/constants";
-import { INITIAL_MOCK_DOCTORS } from "@/features/doctors/services/doctor-api";
+import { useGetDoctorsQuery } from "@/lib/feature/doctor/doctorApi";
 
 interface PatientFormProps {
   initialData?: Partial<PatientFormData>;
@@ -24,6 +24,14 @@ export function PatientForm({
   onCancel,
   isLoading = false,
 }: PatientFormProps) {
+  const { data: doctorsData } = useGetDoctorsQuery({ limit: 100 });
+  const doctorsList = doctorsData?.data?.data || [];
+
+  const defaultDoctorId =
+    lockedDoctorId ||
+    initialData?.doctorId ||
+    (doctorsList.length > 0 ? doctorsList[0]._id : "");
+
   const {
     register,
     handleSubmit,
@@ -36,7 +44,7 @@ export function PatientForm({
       gender: initialData?.gender || "Male",
       condition: initialData?.condition || PATIENT_CONDITIONS[0],
       phone: initialData?.phone || "",
-      doctorId: lockedDoctorId || initialData?.doctorId || INITIAL_MOCK_DOCTORS[0].id,
+      doctorId: defaultDoctorId,
       status: initialData?.status || "Admitted",
     },
   });
@@ -53,7 +61,7 @@ export function PatientForm({
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-medium text-slate-700 mb-1">
             Age
@@ -61,7 +69,7 @@ export function PatientForm({
           <Input
             type="number"
             {...register("age", { valueAsNumber: true })}
-            placeholder="e.g. 35"
+            placeholder="e.g. 42"
           />
           {errors.age && (
             <p className="mt-1 text-xs text-rose-600">{errors.age.message}</p>
@@ -73,9 +81,9 @@ export function PatientForm({
             Gender
           </label>
           <Select {...register("gender")}>
-            {GENDERS.map((gender) => (
-              <option key={gender} value={gender}>
-                {gender}
+            {GENDERS.map((g) => (
+              <option key={g} value={g}>
+                {g}
               </option>
             ))}
           </Select>
@@ -128,11 +136,14 @@ export function PatientForm({
             {...register("doctorId")}
             disabled={Boolean(lockedDoctorId)}
           >
-            {INITIAL_MOCK_DOCTORS.map((doc) => (
-              <option key={doc.id} value={doc.id}>
+            {doctorsList.map((doc) => (
+              <option key={doc._id} value={doc._id}>
                 {doc.name} ({doc.specialization})
               </option>
             ))}
+            {doctorsList.length === 0 && (
+              <option value="">No doctors available</option>
+            )}
           </Select>
         </div>
       </div>

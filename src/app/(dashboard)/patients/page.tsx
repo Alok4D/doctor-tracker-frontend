@@ -7,7 +7,7 @@ import { PatientTable } from "@/features/patients/components/patient-table";
 import { PatientSearch } from "@/features/patients/components/patient-search";
 import { PatientFilters } from "@/features/patients/components/patient-filters";
 import { PatientDialog } from "@/features/patients/components/patient-dialog";
-import { Patient } from "@/features/patients/types/patient.types";
+import { IPatient } from "@/types/patient.types";
 import { PatientFormData } from "@/features/patients/schemas/patient.schema";
 import { PageHeader } from "@/components/shared/page-header";
 import { Pagination } from "@/components/ui/pagination";
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 
 export default function PatientsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+  const [editingPatient, setEditingPatient] = useState<IPatient | null>(null);
 
   const {
     patients,
@@ -42,14 +42,14 @@ export default function PatientsPage() {
     setIsDialogOpen(true);
   };
 
-  const handleOpenEdit = (patient: Patient) => {
+  const handleOpenEdit = (patient: IPatient) => {
     setEditingPatient(patient);
     setIsDialogOpen(true);
   };
 
   const handleSubmitPatient = async (data: PatientFormData) => {
     if (editingPatient) {
-      return await editPatient(editingPatient.id, data);
+      return await editPatient(editingPatient._id, data);
     } else {
       return await addPatient(data);
     }
@@ -113,7 +113,10 @@ export default function PatientsPage() {
                 gender: editingPatient.gender,
                 condition: editingPatient.condition,
                 phone: editingPatient.phone,
-                doctorId: editingPatient.doctorId,
+                doctorId:
+                  typeof editingPatient.doctorId === "object" && editingPatient.doctorId !== null
+                    ? (editingPatient.doctorId as any)._id
+                    : editingPatient.doctorId,
                 status: editingPatient.status,
               }
             : undefined
@@ -129,4 +132,3 @@ export default function PatientsPage() {
     </div>
   );
 }
-

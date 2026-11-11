@@ -1,11 +1,18 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, User, Phone, Calendar, HeartPulse, UserCheck, Shield } from "lucide-react";
-import { Patient } from "@/features/patients/types/patient.types";
-import { patientService } from "@/features/patients/services/patient-api";
+import {
+  ArrowLeft,
+  User,
+  Phone,
+  Calendar,
+  HeartPulse,
+  UserCheck,
+  Shield,
+} from "lucide-react";
+import { useGetPatientByIdQuery } from "@/lib/feature/patient/patientApi";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,24 +24,15 @@ export default function PatientDetailPage({
 }) {
   const router = useRouter();
   const { patientId } = use(params);
-  const [patient, setPatient] = useState<Patient | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, isLoading, error } = useGetPatientByIdQuery(patientId);
 
-  useEffect(() => {
-    async function loadPatient() {
-      setIsLoading(true);
-      const data = await patientService.getPatientById(patientId);
-      setPatient(data);
-      setIsLoading(false);
-    }
-    loadPatient();
-  }, [patientId]);
+  const patient = data?.data;
 
   if (isLoading) {
     return <LoadingSpinner size="lg" />;
   }
 
-  if (!patient) {
+  if (error || !patient) {
     return (
       <div className="flex flex-col items-center justify-center p-12 text-center">
         <h2 className="text-base font-semibold text-slate-900">Patient not found</h2>
@@ -48,6 +46,21 @@ export default function PatientDetailPage({
       </div>
     );
   }
+
+  const doctorName =
+    typeof patient.doctorId === "object" && patient.doctorId !== null
+      ? (patient.doctorId as any).name
+      : "Assigned Physician";
+
+  const doctorSpecialty =
+    typeof patient.doctorId === "object" && patient.doctorId !== null
+      ? (patient.doctorId as any).specialization
+      : "";
+
+  const doctorId =
+    typeof patient.doctorId === "object" && patient.doctorId !== null
+      ? (patient.doctorId as any)._id
+      : null;
 
   return (
     <div className="space-y-6">
@@ -70,7 +83,9 @@ export default function PatientDetailPage({
                 <h1 className="text-xl font-bold text-slate-900">{patient.name}</h1>
                 <Badge variant="default">{patient.status}</Badge>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">Patient ID: {patient.id}</p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Patient ID: {patient._id.slice(-6)}
+              </p>
             </div>
           </div>
         </div>
@@ -106,9 +121,18 @@ export default function PatientDetailPage({
             </div>
             <div>
               <p className="text-xs text-slate-400 font-medium">Assigned Physician</p>
-              <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                {patient.doctorName || "Assigned Doctor"}
-              </p>
+              {doctorId ? (
+                <Link
+                  href={`/doctors/${doctorId}`}
+                  className="text-sm font-semibold text-blue-600 hover:underline mt-0.5 block"
+                >
+                  {doctorName} {doctorSpecialty && `(${doctorSpecialty})`}
+                </Link>
+              ) : (
+                <p className="text-sm font-semibold text-slate-800 mt-0.5">
+                  {doctorName}
+                </p>
+              )}
             </div>
           </div>
 
@@ -131,7 +155,7 @@ export default function PatientDetailPage({
             <div>
               <p className="text-xs text-slate-400 font-medium">Admission Date</p>
               <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                {patient.admissionDate}
+                {patient.admissionDate || (patient.createdAt ? new Date(patient.createdAt).toLocaleDateString() : "Recent")}
               </p>
             </div>
           </div>
@@ -141,7 +165,7 @@ export default function PatientDetailPage({
               <Shield className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-xs text-slate-400 font-medium">Insurance / Coverage</p>
+              <p className="text-xs text-slate-400 font-medium">Coverage</p>
               <p className="text-sm font-semibold text-slate-800 mt-0.5">
                 Care Guide Standard Medical Plan
               </p>
@@ -152,4 +176,3 @@ export default function PatientDetailPage({
     </div>
   );
 }
-

@@ -1,68 +1,56 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Doctor, DoctorFilterParams } from "../types/doctor.types";
+import { useState } from "react";
 import { DoctorFormData } from "../schemas/doctor.schema";
-import { doctorService } from "../services/doctor-api";
+import {
+  useGetDoctorsQuery,
+  useCreateDoctorMutation,
+  useDeleteDoctorMutation,
+} from "@/lib/feature/doctor/doctorApi";
 import { useDebounce } from "@/hooks/use-debounce";
 import { toast } from "sonner";
 
 export function useDoctors() {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [total, setTotal] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const [limit] = useState(8);
   const [search, setSearch] = useState("");
   const [specialization, setSpecialization] = useState("all");
-  const [isLoading, setIsLoading] = useState(true);
 
   const debouncedSearch = useDebounce(search, 300);
 
-  const fetchDoctors = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const params: DoctorFilterParams = {
-        page,
-        limit,
-        search: debouncedSearch,
-        specialization,
-      };
-      const res = await doctorService.getDoctors(params);
-      setDoctors(res.data);
-      setTotal(res.pagination.total);
-      setTotalPages(res.pagination.totalPages);
-    } catch {
-      toast.error("Failed to fetch doctors list");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [page, limit, debouncedSearch, specialization]);
+  const { data, isLoading } = useGetDoctorsQuery({
+    page,
+    limit,
+    searchTerm: debouncedSearch || undefined,
+    specialization: specialization === "all" ? undefined : specialization,
+  });
 
-  useEffect(() => {
-    fetchDoctors();
-  }, [fetchDoctors]);
+  const [createDoctorMutation] = useCreateDoctorMutation();
+  const [deleteDoctorMutation] = useDeleteDoctorMutation();
 
-  const addDoctor = async (data: DoctorFormData) => {
+  const doctors = data?.data?.data || [];
+  const meta = data?.data?.meta;
+  const total = meta?.total ?? doctors.length;
+  const totalPages = meta?.totalPage ?? 1;
+
+  const addDoctor = async (formData: DoctorFormData) => {
     try {
-      await doctorService.createDoctor(data);
+      await createDoctorMutation(formData).unwrap();
       toast.success("Doctor added successfully");
-      fetchDoctors();
       return true;
-    } catch {
-      toast.error("Failed to add doctor");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to add doctor");
       return false;
     }
   };
 
   const removeDoctor = async (id: string) => {
     try {
-      await doctorService.deleteDoctor(id);
-      toast.success("Doctor removed");
-      fetchDoctors();
+      await deleteDoctorMutation(id).unwrap();
+      toast.success("Doctor removed successfully");
       return true;
-    } catch {
-      toast.error("Failed to remove doctor");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to remove doctor");
       return false;
     }
   };
@@ -78,9 +66,7 @@ export function useDoctors() {
     specialization,
     setSpecialization,
     isLoading,
-    fetchDoctors,
     addDoctor,
     removeDoctor,
   };
 }
-

@@ -7,7 +7,7 @@ import { primaryNavItems } from "./nav-items";
 import { cn } from "@/lib/utils";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { logout } from "@/store/slices/auth-slice";
+import { logout } from "@/lib/slice/auth/authSlice";
 import { toast } from "sonner";
 
 interface SidebarProps {

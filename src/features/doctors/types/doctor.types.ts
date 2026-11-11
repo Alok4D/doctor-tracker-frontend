@@ -1,21 +1,5 @@
-export interface Doctor {
-  id: string;
-  name: string;
-  specialization: string;
-  hospital: string;
-  phone: string;
-  email: string;
-  status: "Active" | "Inactive";
-  patientCount: number;
-  avatarUrl?: string;
-  createdAt: string;
-}
+import { IDoctor, IDoctorFilterParams } from "@/types/doctor.types";
 
-export interface DoctorFilterParams {
-  search?: string;
-  specialization?: string;
-  dateRange?: string;
-  page?: number;
-  limit?: number;
-}
-
+export type Doctor = IDoctor;
+export type DoctorFilterParams = IDoctorFilterParams;
+export * from "@/types/doctor.types";

@@ -5,13 +5,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, ShieldCheck, Loader } from "lucide-react";
 import { loginSchema, LoginFormData } from "../schemas/auth.schema";
-import { useAuth } from "../hooks/use-auth";
+import { useAppDispatch } from "@/store/hooks";
+import { useLoginMutation } from "@/lib/feature/auth/authApi";
+import { loginSuccess } from "@/lib/slice/auth/authSlice";
 
 export function LoginForm() {
   const router = useRouter();
-  const { loginUser, isLoading } = useAuth();
+  const dispatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -28,12 +31,20 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    const res = await loginUser(data);
-    if (res.success) {
-      toast.success("Logged in successfully!");
-      router.push("/dashboard");
-    } else {
-      toast.error(res.message || "Failed to login");
+    try {
+      const res = await login(data).unwrap();
+      if (res?.success && res.data) {
+        dispatch(
+          loginSuccess({
+            user: res.data.user,
+            token: res.data.accessToken,
+          })
+        );
+        toast.success("Logged in successfully!");
+        router.push("/dashboard");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to login");
     }
   };
 
@@ -104,9 +115,16 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-xs text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-xs text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
-          {isLoading ? "Signing in..." : "Log In"}
+          {isLoading ? (
+            <>
+              <Loader className="h-4 w-4 animate-spin" />
+              <span>Signing in...</span>
+            </>
+          ) : (
+            "Log In"
+          )}
         </button>
       </form>
 

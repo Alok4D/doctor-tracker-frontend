@@ -1,37 +1,37 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { loginSuccess, logout } from "@/store/slices/auth-slice";
-import { LoginCredentials } from "../types/auth.types";
-import { useState } from "react";
+import { loginSuccess, logout } from "@/lib/slice/auth/authSlice";
+import { useLoginMutation, useGetMeQuery } from "@/lib/feature/auth/authApi";
+import { LoginPayload } from "@/types/auth.types";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
-  const { user, token, isAuthenticated } = useAppSelector((state) => state.auth);
-  const [isLoading, setIsLoading] = useState(false);
+  const { user, token, isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
+  const [loginMutation, { isLoading }] = useLoginMutation();
 
-  const loginUser = async (credentials: LoginCredentials) => {
-    setIsLoading(true);
+  const loginUser = async (credentials: LoginPayload) => {
     try {
-      // Static mock login handler for visual demonstration
-      await new Promise((resolve) => setTimeout(resolve, 600));
-
-      const mockResponse = {
-        user: {
-          id: "admin-1",
-          name: "Admin",
-          email: credentials.email,
-          role: "admin" as const,
-        },
-        token: "mock-jwt-token-care-guide",
+      const res = await loginMutation(credentials).unwrap();
+      if (res.success && res.data) {
+        dispatch(
+          loginSuccess({
+            user: res.data.user,
+            token: res.data.accessToken,
+          })
+        );
+        return { success: true, data: res.data };
+      }
+      return {
+        success: false,
+        message: res.message || "Failed to login",
       };
-
-      dispatch(loginSuccess(mockResponse));
-      return { success: true, data: mockResponse };
-    } catch {
-      return { success: false, message: "Invalid credentials" };
-    } finally {
-      setIsLoading(false);
+    } catch (err: any) {
+      const errorMessage =
+        err?.data?.message || err?.error || "Invalid email or password";
+      return { success: false, message: errorMessage };
     }
   };
 
@@ -48,4 +48,3 @@ export function useAuth() {
     logoutUser,
   };
 }
-

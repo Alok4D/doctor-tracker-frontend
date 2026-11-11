@@ -1,6 +1,8 @@
+"use client";
+
 import { Select } from "@/components/ui/select";
 import { PATIENT_CONDITIONS } from "@/lib/constants";
-import { INITIAL_MOCK_DOCTORS } from "@/features/doctors/services/doctor-api";
+import { useGetDoctorsQuery } from "@/lib/feature/doctor/doctorApi";
 
 interface PatientFiltersProps {
   condition: string;
@@ -19,6 +21,9 @@ export function PatientFilters({
   status,
   onStatusChange,
 }: PatientFiltersProps) {
+  const { data: doctorsData } = useGetDoctorsQuery({ limit: 100 });
+  const doctorsList = doctorsData?.data?.data || [];
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Select
@@ -40,8 +45,8 @@ export function PatientFilters({
         className="w-44 text-xs bg-white"
       >
         <option value="all">All doctors</option>
-        {INITIAL_MOCK_DOCTORS.map((doc) => (
-          <option key={doc.id} value={doc.id}>
+        {doctorsList.map((doc) => (
+          <option key={doc._id} value={doc._id}>
             {doc.name}
           </option>
         ))}
@@ -61,4 +66,3 @@ export function PatientFilters({
     </div>
   );
 }
-

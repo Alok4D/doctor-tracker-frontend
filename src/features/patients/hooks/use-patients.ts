@@ -1,84 +1,76 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Patient, PatientFilterParams } from "../types/patient.types";
+import { useState } from "react";
 import { PatientFormData } from "../schemas/patient.schema";
-import { patientService } from "../services/patient-api";
+import {
+  useGetPatientsQuery,
+  useCreatePatientMutation,
+  useUpdatePatientMutation,
+  useDeletePatientMutation,
+} from "@/lib/feature/patient/patientApi";
 import { useDebounce } from "@/hooks/use-debounce";
 import { toast } from "sonner";
 
 export function usePatients(initialDoctorId?: string) {
-  const [patients, setPatients] = useState<Patient[]>([]);
-  const [total, setTotal] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [search, setSearch] = useState("");
   const [condition, setCondition] = useState("all");
   const [doctorId, setDoctorId] = useState(initialDoctorId || "all");
   const [status, setStatus] = useState("all");
-  const [isLoading, setIsLoading] = useState(true);
 
   const debouncedSearch = useDebounce(search, 300);
 
-  const fetchPatients = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const params: PatientFilterParams = {
-        page,
-        limit,
-        search: debouncedSearch,
-        condition,
-        doctorId: initialDoctorId || doctorId,
-        status,
-      };
-      const res = await patientService.getPatients(params);
-      setPatients(res.data);
-      setTotal(res.pagination.total);
-      setTotalPages(res.pagination.totalPages);
-    } catch {
-      toast.error("Failed to fetch patients list");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [page, limit, debouncedSearch, condition, doctorId, status, initialDoctorId]);
+  const { data, isLoading } = useGetPatientsQuery({
+    page,
+    limit,
+    searchTerm: debouncedSearch || undefined,
+    condition: condition === "all" ? undefined : condition,
+    doctorId: doctorId === "all" ? undefined : doctorId,
+    status: status === "all" ? undefined : status,
+  });
 
-  useEffect(() => {
-    fetchPatients();
-  }, [fetchPatients]);
+  const [createPatientMutation] = useCreatePatientMutation();
+  const [updatePatientMutation] = useUpdatePatientMutation();
+  const [deletePatientMutation] = useDeletePatientMutation();
 
-  const addPatient = async (data: PatientFormData) => {
+  const patients = data?.data?.data || [];
+  const meta = data?.data?.meta;
+  const total = meta?.total ?? patients.length;
+  const totalPages = meta?.totalPage ?? 1;
+
+  const addPatient = async (formData: PatientFormData) => {
     try {
-      await patientService.createPatient(data);
+      await createPatientMutation(formData).unwrap();
       toast.success("Patient registered successfully");
-      fetchPatients();
       return true;
-    } catch {
-      toast.error("Failed to add patient");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to add patient");
       return false;
     }
   };
 
-  const editPatient = async (id: string, data: Partial<PatientFormData>) => {
+  const editPatient = async (id: string, formData: Partial<PatientFormData>) => {
     try {
-      await patientService.updatePatient(id, data);
+      await updatePatientMutation({
+        id,
+        body: formData,
+      }).unwrap();
       toast.success("Patient updated successfully");
-      fetchPatients();
       return true;
-    } catch {
-      toast.error("Failed to update patient");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to update patient");
       return false;
     }
   };
 
   const removePatient = async (id: string) => {
     try {
-      await patientService.deletePatient(id);
-      toast.success("Patient removed");
-      fetchPatients();
+      await deletePatientMutation(id).unwrap();
+      toast.success("Patient removed successfully");
       return true;
-    } catch {
-      toast.error("Failed to remove patient");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to remove patient");
       return false;
     }
   };
@@ -98,10 +90,8 @@ export function usePatients(initialDoctorId?: string) {
     status,
     setStatus,
     isLoading,
-    fetchPatients,
     addPatient,
     editPatient,
     removePatient,
   };
 }
-

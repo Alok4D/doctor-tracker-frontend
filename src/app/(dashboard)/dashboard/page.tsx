@@ -11,154 +11,188 @@ import {
 import { StatsCard } from "@/features/dashboard/components/stats-card";
 import { PatientsOverviewChart } from "@/features/dashboard/components/patients-chart";
 import { DoctorsBySpecialtyChart } from "@/features/dashboard/components/doctors-chart";
-import { RecentTables } from "@/features/dashboard/components/recent-patients";
+import { TopDoctorsTable } from "@/features/dashboard/components/top-doctors-table";
+import { RecentPatientsTable } from "@/features/dashboard/components/recent-patients-table";
+import { QuickActions } from "@/features/dashboard/components/quick-actions";
 import { DoctorDialog } from "@/features/doctors/components/doctor-dialog";
 import { PatientDialog } from "@/features/patients/components/patient-dialog";
-import { useDoctors } from "@/features/doctors/hooks/use-doctors";
-import { usePatients } from "@/features/patients/hooks/use-patients";
-import { INITIAL_MOCK_DOCTORS } from "@/features/doctors/services/doctor-api";
-import { INITIAL_MOCK_PATIENTS } from "@/features/patients/services/patient-api";
-import { Patient } from "@/features/patients/types/patient.types";
+import { DoctorFormData } from "@/features/doctors/schemas/doctor.schema";
+import { PatientFormData } from "@/features/patients/schemas/patient.schema";
+import { IPatient } from "@/types/patient.types";
+import {
+  useGetDashboardStatsQuery,
+} from "@/lib/feature/dashboard/dashboardApi";
+import {
+  useGetDoctorsQuery,
+  useCreateDoctorMutation,
+  useDeleteDoctorMutation,
+} from "@/lib/feature/doctor/doctorApi";
+import {
+  useGetPatientsQuery,
+  useCreatePatientMutation,
+  useUpdatePatientMutation,
+  useDeletePatientMutation,
+} from "@/lib/feature/patient/patientApi";
 import { toast } from "sonner";
 
 export default function DashboardPage() {
   const [timeRange, setTimeRange] = useState("Last 30 Days");
   const [isAddDoctorOpen, setIsAddDoctorOpen] = useState(false);
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
-  const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+  const [editingPatient, setEditingPatient] = useState<IPatient | null>(null);
 
-  const [topDoctors, setTopDoctors] = useState(INITIAL_MOCK_DOCTORS);
-  const [recentPatients, setRecentPatients] = useState(INITIAL_MOCK_PATIENTS);
+  // RTK Queries
+  const { data: statsData } = useGetDashboardStatsQuery();
+  const { data: doctorsData, isLoading: isLoadingDoctors } = useGetDoctorsQuery({ limit: 5 });
+  const { data: patientsData, isLoading: isLoadingPatients } = useGetPatientsQuery({ limit: 5 });
 
-  const { addDoctor } = useDoctors();
-  const { addPatient, editPatient } = usePatients();
+  // RTK Mutations
+  const [createDoctor] = useCreateDoctorMutation();
+  const [deleteDoctor] = useDeleteDoctorMutation();
+  const [createPatient] = useCreatePatientMutation();
+  const [updatePatient] = useUpdatePatientMutation();
+  const [deletePatient] = useDeletePatientMutation();
 
-  // Wave sparkline data for 4 KPI cards matching screenshot
+  const stats = statsData?.data;
+  const topDoctors = doctorsData?.data?.data || [];
+  const recentPatients = patientsData?.data?.data || [];
+
+  // Sparkline data
   const sparklineDoctors = [
-    { v: 16 },
-    { v: 18 },
-    { v: 21 },
-    { v: 19 },
-    { v: 22 },
-    { v: 20 },
-    { v: 24 },
+    { v: 16 }, { v: 18 }, { v: 21 }, { v: 19 }, { v: 22 }, { v: 20 }, { v: 24 },
   ];
   const sparklinePatients = [
-    { v: 920 },
-    { v: 990 },
-    { v: 1040 },
-    { v: 1010 },
-    { v: 1140 },
-    { v: 1190 },
-    { v: 1250 },
+    { v: 920 }, { v: 990 }, { v: 1040 }, { v: 1010 }, { v: 1140 }, { v: 1190 }, { v: 1250 },
   ];
   const sparklineAppointments = [
-    { v: 680 },
-    { v: 740 },
-    { v: 710 },
-    { v: 800 },
-    { v: 830 },
-    { v: 870 },
-    { v: 892 },
+    { v: 680 }, { v: 740 }, { v: 710 }, { v: 800 }, { v: 830 }, { v: 870 }, { v: 892 },
   ];
   const sparklineActive = [
-    { v: 18 },
-    { v: 19 },
-    { v: 21 },
-    { v: 20 },
-    { v: 22 },
-    { v: 21 },
-    { v: 22 },
+    { v: 18 }, { v: 19 }, { v: 21 }, { v: 20 }, { v: 22 }, { v: 21 }, { v: 22 },
   ];
 
-  const handleDeleteDoctor = (id: string) => {
-    setTopDoctors((prev) => prev.filter((d) => d.id !== id));
-    toast.success("Doctor record deleted");
+  const handleCreateDoctor = async (data: DoctorFormData) => {
+    try {
+      await createDoctor(data).unwrap();
+      toast.success("Doctor created successfully!");
+      setIsAddDoctorOpen(false);
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to create doctor");
+    }
   };
 
-  const handleDeletePatient = (id: string) => {
-    setRecentPatients((prev) => prev.filter((p) => p.id !== id));
-    toast.success("Patient record deleted");
+  const handleDeleteDoctor = async (id: string) => {
+    try {
+      await deleteDoctor(id).unwrap();
+      toast.success("Doctor removed successfully");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to delete doctor");
+    }
   };
 
-  const handleEditPatient = (patient: Patient) => {
+  const handleCreateOrUpdatePatient = async (data: PatientFormData) => {
+    try {
+      if (editingPatient) {
+        await updatePatient({
+          id: editingPatient._id,
+          body: data,
+        }).unwrap();
+        toast.success("Patient record updated successfully!");
+      } else {
+        await createPatient(data).unwrap();
+        toast.success("Patient registered successfully!");
+      }
+      setIsAddPatientOpen(false);
+      setEditingPatient(null);
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to save patient record");
+    }
+  };
+
+  const handleDeletePatient = async (id: string) => {
+    try {
+      await deletePatient(id).unwrap();
+      toast.success("Patient record removed");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to delete patient");
+    }
+  };
+
+  const handleEditPatient = (patient: IPatient) => {
     setEditingPatient(patient);
     setIsAddPatientOpen(true);
   };
 
   return (
     <div className="space-y-6">
-      {/* Header Greeting matching user's image */}
+      {/* Dashboard Top Greeting Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
-            <span>Dashboard</span>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              Dashboard
+            </h1>
             <span className="text-xl">👋</span>
-          </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          </div>
+          <p className="text-xs text-slate-500 mt-1">
             Welcome back! Here&apos;s what&apos;s happening with your healthcare system today.
           </p>
         </div>
 
-        {/* Date Filter Dropdown */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 shadow-2xs">
-            <CalendarDays className="h-4 w-4 text-slate-500" />
-            <select
-              value={timeRange}
-              onChange={(e) => setTimeRange(e.target.value)}
-              className="bg-transparent focus:outline-none cursor-pointer pr-2"
-            >
-              <option>Last 30 Days</option>
-              <option>Last 7 Days</option>
-              <option>This Month</option>
-              <option>This Year</option>
-            </select>
-          </div>
+        {/* Time Period Filter Pill Button */}
+        <div className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer self-start sm:self-auto">
+          <CalendarDays className="h-4 w-4 text-slate-500" />
+          <select
+            value={timeRange}
+            onChange={(e) => setTimeRange(e.target.value)}
+            className="bg-transparent border-none text-xs font-medium text-slate-700 focus:outline-none cursor-pointer pr-1"
+          >
+            <option value="Today">Today</option>
+            <option value="Last 7 Days">Last 7 Days</option>
+            <option value="Last 30 Days">Last 30 Days</option>
+            <option value="This Year">This Year</option>
+          </select>
         </div>
       </div>
 
-      {/* Row 1: 4 Colored KPI Cards with Sparklines */}
+      {/* Row 1: Four Sparkline KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
           title="Total Doctors"
-          value="24"
-          change="↑ 12%"
+          value={stats?.totalDoctors ?? 24}
+          change="+ 12%"
           icon={UserCheck}
           sparklineData={sparklineDoctors}
           theme="blue"
         />
-
         <StatsCard
           title="Total Patients"
-          value="1,250"
-          change="↑ 8%"
+          value={stats?.totalPatients ?? 1250}
+          change="+ 8%"
           icon={Users}
           sparklineData={sparklinePatients}
           theme="emerald"
         />
-
         <StatsCard
           title="Appointments"
-          value="892"
-          change="↑ 15%"
+          value={stats?.appointments ?? 892}
+          change="+ 15%"
           icon={Calendar}
           sparklineData={sparklineAppointments}
           theme="purple"
         />
-
         <StatsCard
           title="Active Doctors"
-          value="22"
-          change="↑ 5%"
+          value={stats?.activeDoctors ?? 22}
+          change="+ 5%"
           icon={CheckCircle2}
           sparklineData={sparklineActive}
           theme="orange"
         />
       </div>
 
-      {/* Row 2: Charts (Patients Overview on left + Doctors by Specialty on right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+      {/* Row 2: Charts Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div className="lg:col-span-7">
           <PatientsOverviewChart />
         </div>
@@ -167,28 +201,47 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Row 3: Top Doctors & New Patients Side-by-Side Tables (Matching Screenshot) */}
-      <RecentTables
-        doctors={topDoctors}
-        patients={recentPatients}
-        onDeleteDoctor={handleDeleteDoctor}
-        onDeletePatient={handleDeletePatient}
-        onEditPatient={handleEditPatient}
-      />
+      {/* Row 3: Top Doctors & New Patients Table Cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <TopDoctorsTable
+          doctors={topDoctors}
+          isLoading={isLoadingDoctors}
+          onDeleteDoctor={handleDeleteDoctor}
+        />
+        <RecentPatientsTable
+          patients={recentPatients}
+          isLoading={isLoadingPatients}
+          onDeletePatient={handleDeletePatient}
+          onEditPatient={handleEditPatient}
+        />
+      </div>
 
-      {/* Interactive Dialogs */}
+      {/* Row 4: Quick Actions Bar */}
+      <div className="max-w-xl">
+        <QuickActions
+          onAddDoctor={() => setIsAddDoctorOpen(true)}
+          onAddPatient={() => {
+            setEditingPatient(null);
+            setIsAddPatientOpen(true);
+          }}
+        />
+      </div>
+
+      {/* Add Doctor Dialog */}
       <DoctorDialog
         open={isAddDoctorOpen}
         onOpenChange={setIsAddDoctorOpen}
-        onSubmit={addDoctor}
+        onSubmit={handleCreateDoctor}
       />
 
+      {/* Add / Edit Patient Dialog */}
       <PatientDialog
         open={isAddPatientOpen}
         onOpenChange={(open) => {
           setIsAddPatientOpen(open);
           if (!open) setEditingPatient(null);
         }}
+        onSubmit={handleCreateOrUpdatePatient}
         initialData={
           editingPatient
             ? {
@@ -197,18 +250,20 @@ export default function DashboardPage() {
                 gender: editingPatient.gender,
                 condition: editingPatient.condition,
                 phone: editingPatient.phone,
-                doctorId: editingPatient.doctorId,
+                doctorId:
+                  typeof editingPatient.doctorId === "object"
+                    ? editingPatient.doctorId._id
+                    : editingPatient.doctorId,
                 status: editingPatient.status,
               }
             : undefined
         }
-        onSubmit={async (data) => {
-          if (editingPatient) {
-            await editPatient(editingPatient.id, data);
-          } else {
-            await addPatient(data);
-          }
-        }}
+        title={editingPatient ? "Edit Patient Record" : "Register New Patient"}
+        description={
+          editingPatient
+            ? "Update clinical data and doctor assignment."
+            : "Assign patient to a doctor and enter diagnosis information."
+        }
       />
     </div>
   );

@@ -11,8 +11,8 @@ import {
   Calendar,
   Users,
 } from "lucide-react";
-import { Doctor } from "../types/doctor.types";
-import { Patient } from "@/features/patients/types/patient.types";
+import { IDoctor } from "@/types/doctor.types";
+import { IPatient } from "@/types/patient.types";
 import { PatientFormData } from "@/features/patients/schemas/patient.schema";
 import { PatientTable } from "@/features/patients/components/patient-table";
 import { PatientDialog } from "@/features/patients/components/patient-dialog";
@@ -21,8 +21,8 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 interface DoctorDetailsProps {
-  doctor: Doctor;
-  patients: Patient[];
+  doctor: IDoctor;
+  patients: IPatient[];
   onAddPatient: (data: PatientFormData) => Promise<boolean | void>;
   onDeletePatient: (patientId: string) => void;
 }
@@ -34,6 +34,7 @@ export function DoctorDetails({
   onDeletePatient,
 }: DoctorDetailsProps) {
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
+  const docId = doctor._id;
 
   return (
     <div className="space-y-6">
@@ -91,10 +92,12 @@ export function DoctorDetails({
                   <Mail className="h-3.5 w-3.5 text-slate-400" />
                   {doctor.email}
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5 text-slate-400" />
-                  Joined: {doctor.createdAt}
-                </span>
+                {doctor.createdAt && (
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                    Joined: {new Date(doctor.createdAt).toLocaleDateString()}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -143,13 +146,12 @@ export function DoctorDetails({
       <PatientDialog
         open={isAddPatientOpen}
         onOpenChange={setIsAddPatientOpen}
-        lockedDoctorId={doctor.id}
+        lockedDoctorId={docId}
         title={`Assign patient to ${doctor.name}`}
         description="Fill in the patient's medical condition and contact info."
         onSubmit={async (data) => {
-          const ok = await onAddPatient({ ...data, doctorId: doctor.id });
+          const ok = await onAddPatient({ ...data, doctorId: docId });
           if (ok !== false) {
-            toast.success(`Patient assigned to ${doctor.name}`);
             setIsAddPatientOpen(false);
           }
         }}
@@ -157,4 +159,3 @@ export function DoctorDetails({
     </div>
   );
 }
-
