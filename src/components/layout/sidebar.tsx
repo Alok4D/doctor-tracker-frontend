@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { LogOut, X, ChevronRight, Activity } from "lucide-react";
 import { primaryNavItems } from "./nav-items";
 import { cn } from "@/lib/utils";
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout } from "@/store/slices/auth-slice";
 import { toast } from "sonner";
@@ -133,16 +134,21 @@ export function Sidebar({
               !isMobileOpen && isCollapsed ? "justify-center" : "px-2"
             )}
           >
-            <div className="w-9 h-9 rounded-full bg-white/15 border border-white/20 flex items-center justify-center shrink-0 text-white font-semibold text-xs">
-              {user?.name ? user.name.slice(0, 2).toUpperCase() : "AD"}
+            <div className="w-10 h-10 rounded-full border border-blue-400/40 flex items-center justify-center shrink-0 overflow-hidden bg-blue-700 shadow-xs">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={DEFAULT_AVATAR_URL}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
             </div>
             {(!isCollapsed || isMobileOpen) && (
               <div className="ml-3 overflow-hidden">
-                <p className="text-xs font-semibold text-white truncate">
-                  {user?.name || "Dr. Administrator"}
+                <p className="text-sm font-medium text-white truncate">
+                  {user?.name || "Admin"}
                 </p>
-                <p className="text-[11px] text-blue-200 capitalize truncate">
-                  {user?.role || "Hospital Admin"}
+                <p className="text-xs text-blue-200 capitalize truncate">
+                  {user?.role || "Admin"}
                 </p>
               </div>
             )}

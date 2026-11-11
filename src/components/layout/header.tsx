@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Menu, Bell, Check, BellRing, Search } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 
 interface HeaderProps {
   isCollapsed: boolean;
@@ -172,18 +173,23 @@ export function Header({
         {/* Divider */}
         <div className="h-6 w-px bg-slate-200 hidden sm:block" />
 
-        {/* User Profile Info */}
-        <div className="flex items-center space-x-2.5">
+        {/* User Profile Info matching user's image */}
+        <div className="flex items-center space-x-3">
           <div className="hidden sm:flex flex-col text-right">
-            <span className="text-xs font-semibold text-slate-800 leading-none">
-              {user?.name || "Dr. Administrator"}
+            <span className="text-sm font-medium text-slate-900 leading-none">
+              {user?.name || "Admin"}
             </span>
-            <span className="text-[11px] text-slate-400 capitalize mt-1 leading-none">
-              {user?.role || "Hospital Admin"}
+            <span className="text-xs text-slate-400 capitalize mt-1 leading-none">
+              {user?.role || "Admin"}
             </span>
           </div>
-          <div className="w-9 h-9 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold text-xs shrink-0">
-            {user?.name ? user.name.slice(0, 2).toUpperCase() : "AD"}
+          <div className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center bg-slate-50 overflow-hidden shrink-0 shadow-xs">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={DEFAULT_AVATAR_URL}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>

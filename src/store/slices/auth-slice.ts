@@ -16,7 +16,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: {
     id: "admin-1",
-    name: "Admin Doctor",
+    name: "Admin",
     email: "admin@doctor-tracker.com",
     role: "admin",
   },

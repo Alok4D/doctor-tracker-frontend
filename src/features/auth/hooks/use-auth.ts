@@ -19,7 +19,7 @@ export function useAuth() {
       const mockResponse = {
         user: {
           id: "admin-1",
-          name: "Dr. Administrator",
+          name: "Admin",
           email: credentials.email,
           role: "admin" as const,
         },
