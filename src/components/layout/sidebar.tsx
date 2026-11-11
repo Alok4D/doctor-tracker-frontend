@@ -150,17 +150,17 @@ export function Sidebar({
 
           <button
             onClick={handleLogout}
-            title={!isMobileOpen && isCollapsed ? "Sign out" : undefined}
+            title={!isMobileOpen && isCollapsed ? "Log out" : undefined}
             className={cn(
-              "flex items-center text-blue-100 rounded-lg hover:bg-white/10 hover:text-white transition-colors w-full",
+              "flex items-center text-blue-100 rounded-lg border border-blue-500/60 bg-blue-700/50 hover:bg-blue-700 hover:text-white hover:border-blue-400/80 transition-all w-full shadow-xs",
               !isMobileOpen && isCollapsed
-                ? "justify-center p-2.5"
-                : "justify-start px-3 py-2 text-xs font-medium"
+                ? "justify-center p-2.5 h-10"
+                : "justify-center px-4 py-2.5 h-10 text-sm font-medium"
             )}
           >
             <LogOut className="w-4 h-4 shrink-0" />
             {(!isCollapsed || isMobileOpen) && (
-              <span className="ml-2.5 truncate">Sign out</span>
+              <span className="ml-2 font-medium truncate">Log out</span>
             )}
           </button>
         </div>

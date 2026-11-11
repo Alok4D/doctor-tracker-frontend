@@ -88,18 +88,7 @@ export function Header({
           <Menu className="w-5 h-5" />
         </button>
 
-        {/* Global Search Bar */}
-        
-        <div className="relative hidden sm:block w-72 lg:w-80">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search doctors, patients, records..."
-            className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-colors"
-          />
-        </div>
+        Welcome to Doctor Tracker
       </div>
 
       <div className="flex items-center space-x-4">
