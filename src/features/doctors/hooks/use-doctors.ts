@@ -13,16 +13,47 @@ import { toast } from "sonner";
 export function useDoctors() {
   const [page, setPage] = useState(1);
   const [limit] = useState(8);
-  const [search, setSearch] = useState("");
-  const [specialization, setSpecialization] = useState("all");
+  const [search, setSearchState] = useState("");
+  const [specialization, setSpecializationState] = useState("all");
+  const [status, setStatusState] = useState("all");
+  const [startDate, setStartDateState] = useState("");
+  const [endDate, setEndDateState] = useState("");
 
   const debouncedSearch = useDebounce(search, 300);
+
+  const setSearch = (val: string) => {
+    setSearchState(val);
+    setPage(1);
+  };
+
+  const setSpecialization = (val: string) => {
+    setSpecializationState(val);
+    setPage(1);
+  };
+
+  const setStatus = (val: string) => {
+    setStatusState(val);
+    setPage(1);
+  };
+
+  const setStartDate = (val: string) => {
+    setStartDateState(val);
+    setPage(1);
+  };
+
+  const setEndDate = (val: string) => {
+    setEndDateState(val);
+    setPage(1);
+  };
 
   const { data, isLoading } = useGetDoctorsQuery({
     page,
     limit,
     searchTerm: debouncedSearch || undefined,
     specialization: specialization === "all" ? undefined : specialization,
+    status: status === "all" ? undefined : status,
+    startDate: startDate || undefined,
+    endDate: endDate || undefined,
   });
 
   const [createDoctorMutation] = useCreateDoctorMutation();
@@ -65,6 +96,12 @@ export function useDoctors() {
     setSearch,
     specialization,
     setSpecialization,
+    status,
+    setStatus,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     isLoading,
     addDoctor,
     removeDoctor,

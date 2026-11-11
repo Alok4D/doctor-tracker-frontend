@@ -17,6 +17,8 @@ export interface IDoctorFilterParams {
   specialization?: string;
   hospital?: string;
   status?: string;
+  startDate?: string;
+  endDate?: string;
   page?: number;
   limit?: number;
   sortBy?: string;

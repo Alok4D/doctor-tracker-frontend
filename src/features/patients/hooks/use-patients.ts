@@ -14,12 +14,44 @@ import { toast } from "sonner";
 export function usePatients(initialDoctorId?: string) {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const [search, setSearch] = useState("");
-  const [condition, setCondition] = useState("all");
-  const [doctorId, setDoctorId] = useState(initialDoctorId || "all");
-  const [status, setStatus] = useState("all");
+  const [search, setSearchState] = useState("");
+  const [condition, setConditionState] = useState("all");
+  const [doctorId, setDoctorIdState] = useState(initialDoctorId || "all");
+  const [status, setStatusState] = useState("all");
+  const [startDate, setStartDateState] = useState("");
+  const [endDate, setEndDateState] = useState("");
 
   const debouncedSearch = useDebounce(search, 300);
+
+  const setSearch = (val: string) => {
+    setSearchState(val);
+    setPage(1);
+  };
+
+  const setCondition = (val: string) => {
+    setConditionState(val);
+    setPage(1);
+  };
+
+  const setDoctorId = (val: string) => {
+    setDoctorIdState(val);
+    setPage(1);
+  };
+
+  const setStatus = (val: string) => {
+    setStatusState(val);
+    setPage(1);
+  };
+
+  const setStartDate = (val: string) => {
+    setStartDateState(val);
+    setPage(1);
+  };
+
+  const setEndDate = (val: string) => {
+    setEndDateState(val);
+    setPage(1);
+  };
 
   const { data, isLoading } = useGetPatientsQuery({
     page,
@@ -28,6 +60,8 @@ export function usePatients(initialDoctorId?: string) {
     condition: condition === "all" ? undefined : condition,
     doctorId: doctorId === "all" ? undefined : doctorId,
     status: status === "all" ? undefined : status,
+    startDate: startDate || undefined,
+    endDate: endDate || undefined,
   });
 
   const [createPatientMutation] = useCreatePatientMutation();
@@ -89,6 +123,10 @@ export function usePatients(initialDoctorId?: string) {
     setDoctorId,
     status,
     setStatus,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     isLoading,
     addPatient,
     editPatient,

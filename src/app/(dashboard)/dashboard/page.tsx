@@ -14,6 +14,7 @@ import { DoctorsBySpecialtyChart } from "@/features/dashboard/components/doctors
 import { TopDoctorsTable } from "@/features/dashboard/components/top-doctors-table";
 import { RecentPatientsTable } from "@/features/dashboard/components/recent-patients-table";
 import { QuickActions } from "@/features/dashboard/components/quick-actions";
+import { PatientsPerDoctorChart } from "@/features/dashboard/components/patients-per-doctor-chart";
 import { DoctorDialog } from "@/features/doctors/components/doctor-dialog";
 import { PatientDialog } from "@/features/patients/components/patient-dialog";
 import { DoctorFormData } from "@/features/doctors/schemas/doctor.schema";
@@ -216,15 +217,20 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Row 4: Quick Actions Bar */}
-      <div className="max-w-xl">
-        <QuickActions
-          onAddDoctor={() => setIsAddDoctorOpen(true)}
-          onAddPatient={() => {
-            setEditingPatient(null);
-            setIsAddPatientOpen(true);
-          }}
-        />
+      {/* Row 4: Patients per Doctor Chart & Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div className="lg:col-span-7">
+          <PatientsPerDoctorChart />
+        </div>
+        <div className="lg:col-span-5">
+          <QuickActions
+            onAddDoctor={() => setIsAddDoctorOpen(true)}
+            onAddPatient={() => {
+              setEditingPatient(null);
+              setIsAddPatientOpen(true);
+            }}
+          />
+        </div>
       </div>
 
       {/* Add Doctor Dialog */}

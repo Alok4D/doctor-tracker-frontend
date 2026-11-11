@@ -23,6 +23,12 @@ export default function DoctorsPage() {
     setSearch,
     specialization,
     setSpecialization,
+    status,
+    setStatus,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     isLoading,
     addDoctor,
     removeDoctor,
@@ -44,12 +50,18 @@ export default function DoctorsPage() {
         </Button>
       </PageHeader>
 
-      {/* Toolbar: Search & Specialization filter */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      {/* Toolbar: Search, Specialization, Status & Date filter */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
         <DoctorSearch value={search} onChange={setSearch} />
         <DoctorFilters
           specialization={specialization}
           onSpecializationChange={setSpecialization}
+          status={status}
+          onStatusChange={setStatus}
+          startDate={startDate}
+          onStartDateChange={setStartDate}
+          endDate={endDate}
+          onEndDateChange={setEndDate}
         />
       </div>
 
@@ -77,4 +89,3 @@ export default function DoctorsPage() {
     </div>
   );
 }
-

@@ -31,6 +31,10 @@ export default function PatientsPage() {
     setDoctorId,
     status,
     setStatus,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     isLoading,
     addPatient,
     editPatient,
@@ -81,6 +85,10 @@ export default function PatientsPage() {
           onDoctorIdChange={setDoctorId}
           status={status}
           onStatusChange={setStatus}
+          startDate={startDate}
+          onStartDateChange={setStartDate}
+          endDate={endDate}
+          onEndDateChange={setEndDate}
         />
       </div>
 

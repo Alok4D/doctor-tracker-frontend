@@ -21,6 +21,14 @@ export const patientApi = baseApi.injectEndpoints({
             queryParams.append("status", params.status);
           if (params.doctorId && params.doctorId !== "All")
             queryParams.append("doctorId", params.doctorId);
+          if (params.startDate) queryParams.append("startDate", params.startDate);
+          if (params.endDate)
+            queryParams.append(
+              "endDate",
+              params.endDate.includes("T")
+                ? params.endDate
+                : `${params.endDate}T23:59:59.999Z`
+            );
           if (params.page) queryParams.append("page", params.page.toString());
           if (params.limit) queryParams.append("limit", params.limit.toString());
           if (params.sortBy) queryParams.append("sortBy", params.sortBy);

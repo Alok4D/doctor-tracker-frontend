@@ -23,6 +23,8 @@ export interface IPatientFilterParams {
   condition?: string;
   doctorId?: string;
   status?: string;
+  startDate?: string;
+  endDate?: string;
   page?: number;
   limit?: number;
   sortBy?: string;

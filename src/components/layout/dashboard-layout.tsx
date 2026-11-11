@@ -1,11 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
+import { useAppSelector } from "@/store/hooks";
+import { Loader } from "lucide-react";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { isAuthenticated, token } = useAppSelector((state) => state.auth);
+  const [isMounted, setIsMounted] = useState(false);
+
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth < 1280;
@@ -13,7 +20,17 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     return false;
   });
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const pathname = usePathname();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Protect portal on client side
+  useEffect(() => {
+    if (isMounted && (!isAuthenticated || !token)) {
+      router.replace("/login");
+    }
+  }, [isMounted, isAuthenticated, token, router]);
 
   // Close mobile sidebar when route changes
   useEffect(() => {
@@ -33,6 +50,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (!isMounted || !isAuthenticated || !token) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-slate-50">
+        <Loader className="h-7 w-7 animate-spin text-blue-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden font-roboto text-slate-800">

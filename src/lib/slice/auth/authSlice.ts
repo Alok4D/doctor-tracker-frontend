@@ -52,6 +52,7 @@ export const authSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.setItem("token", action.payload.token);
         localStorage.setItem("user", JSON.stringify(action.payload.user));
+        document.cookie = `token=${action.payload.token}; path=/; max-age=86400; SameSite=Lax`;
       }
     },
     logout: (state) => {
@@ -62,6 +63,7 @@ export const authSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
       }
     },
     setUser: (state, action: PayloadAction<TUser>) => {
@@ -75,4 +77,3 @@ export const authSlice = createSlice({
 
 export const { loginSuccess, logout, setUser } = authSlice.actions;
 export default authSlice.reducer;
-
