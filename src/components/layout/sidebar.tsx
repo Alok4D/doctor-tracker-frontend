@@ -160,11 +160,11 @@ export function Sidebar({
             </div>
             {(!isCollapsed || isMobileOpen) && (
               <div className="ml-3 overflow-hidden">
-                <p className="text-sm font-semibold text-[#143B42] truncate">
-                  {user?.name || "Admin"}
-                </p>
+                {user?.role
+                  ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
+                  : "Admin"}
                 <p className="text-xs text-slate-400 capitalize truncate">
-                  {user?.role || "Admin"}
+                  {user?.email || "Admin"}
                 </p>
               </div>
             )}
