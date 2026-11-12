@@ -75,8 +75,17 @@ export default function PatientDetailPage({
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
         <div className="flex items-center justify-between border-b border-slate-100 pb-5">
           <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-base font-bold text-slate-700">
-              {patient.name.slice(0, 2).toUpperCase()}
+            <div className="h-14 w-14 rounded-full bg-[#EBF6F6] border border-[#CBE6E8] flex items-center justify-center text-base font-bold text-[#143B42] overflow-hidden shrink-0">
+              {patient.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={patient.avatarUrl}
+                  alt={patient.name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                patient.name.slice(0, 2).toUpperCase()
+              )}
             </div>
             <div>
               <div className="flex items-center gap-2">
