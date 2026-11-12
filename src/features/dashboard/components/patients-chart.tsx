@@ -1,23 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-  AreaChart,
+  ComposedChart,
   Area,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { BarChart3 } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { useGetPatientsOverviewQuery } from "@/lib/feature/dashboard/dashboardApi";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function PatientsOverviewChart() {
   const [timeframe, setTimeframe] = useState("all");
   const { data, isLoading, isFetching } = useGetPatientsOverviewQuery(timeframe);
-  const chartData = data?.data?.dateStats || [];
+  const rawStats = data?.data?.dateStats || [];
+
+  const chartData = useMemo(() => {
+    let runningTotal = 0;
+    return rawStats.map((item) => {
+      runningTotal += item.totalPatients;
+      return {
+        date: item.date,
+        dailyPatients: item.totalPatients,
+        admittedPatients: item.admittedPatients,
+        cumulativeTotal: runningTotal,
+      };
+    });
+  }, [rawStats]);
 
   return (
     <div className="rounded-xl border border-[#E5ECEE] bg-white p-5 shadow-xs flex flex-col justify-between h-full">
@@ -25,32 +39,31 @@ export function PatientsOverviewChart() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#EBF6F6] text-[#3F97A5]">
-            <BarChart3 className="h-4 w-4" />
+            <TrendingUp className="h-4 w-4" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-[#143B42]">
               Date-based Statistics
             </h3>
             <p className="text-[11px] text-slate-400">
-              Patient admissions & registrations over time
+              Cumulative growth &amp; daily patient volume
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Legend */}
-          <div className="hidden sm:flex items-center gap-3 text-xs text-slate-600">
+          <div className="hidden sm:flex items-center gap-3 text-[11px] text-slate-600">
             <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#3F97A5]" />
-              <span>Total</span>
+              <span className="h-2.5 w-2.5 rounded-full bg-[#194D54]" />
+              <span>Cumulative</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#143B42]" />
-              <span>Admitted</span>
+              <span className="h-2.5 w-2.5 rounded-sm bg-[#7AE4F2]" />
+              <span>On Date</span>
             </div>
           </div>
 
-          {/* Timeframe dropdown */}
           <select
             value={timeframe}
             onChange={(e) => setTimeframe(e.target.value)}
@@ -64,21 +77,22 @@ export function PatientsOverviewChart() {
         </div>
       </div>
 
-      {/* Chart or Layout-Matched Skeleton */}
-      <div className="h-60 w-full pt-4">
+      {/* Composed Growth + Daily Volume Chart */}
+      <div className="flex-1 min-h-[330px] w-full pt-5">
         {isLoading || isFetching ? (
           <div className="h-full w-full flex flex-col justify-between py-2">
-            <div className="flex-1 flex items-end gap-4 px-4 pb-4 border-b border-l border-slate-100">
-              <Skeleton className="flex-1 h-[38%] rounded-t-lg" />
-              <Skeleton className="flex-1 h-[62%] rounded-t-lg" />
-              <Skeleton className="flex-1 h-[82%] rounded-t-lg" />
-              <Skeleton className="flex-1 h-[74%] rounded-t-lg" />
+            <div className="flex-1 flex items-end justify-around gap-3 px-4 pb-4 border-b border-l border-slate-100">
+              <Skeleton className="flex-1 h-[20%] rounded-t-md" />
+              <Skeleton className="flex-1 h-[32%] rounded-t-md" />
+              <Skeleton className="flex-1 h-[45%] rounded-t-md" />
+              <Skeleton className="flex-1 h-[58%] rounded-t-md" />
+              <Skeleton className="flex-1 h-[72%] rounded-t-md" />
+              <Skeleton className="flex-1 h-[88%] rounded-t-md" />
             </div>
-            <div className="flex justify-between px-6 pt-2">
-              <Skeleton className="h-3 w-12" />
-              <Skeleton className="h-3 w-12" />
-              <Skeleton className="h-3 w-12" />
-              <Skeleton className="h-3 w-12" />
+            <div className="flex justify-between px-6 pt-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-3 w-12" />
+              ))}
             </div>
           </div>
         ) : chartData.length === 0 ? (
@@ -87,27 +101,28 @@ export function PatientsOverviewChart() {
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
+            <ComposedChart
               data={chartData}
-              margin={{ top: 10, right: 10, left: -24, bottom: 0 }}
+              margin={{ top: 12, right: 16, left: -20, bottom: 4 }}
             >
               <defs>
-                <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3F97A5" stopOpacity={0.28} />
-                  <stop offset="95%" stopColor="#3F97A5" stopOpacity={0.0} />
-                </linearGradient>
-                <linearGradient id="colorAdmitted" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#143B42" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#143B42" stopOpacity={0.0} />
+                <linearGradient id="cumulativeTeal" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3F97A5" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="#3F97A5" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <CartesianGrid
+                strokeDasharray="2 4"
+                vertical={false}
+                stroke="#E2E8F0"
+              />
               <XAxis
                 dataKey="date"
                 stroke="#94a3b8"
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
+                dy={6}
               />
               <YAxis
                 stroke="#94a3b8"
@@ -119,35 +134,40 @@ export function PatientsOverviewChart() {
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  border: "1px solid #DCEAEB",
+                  borderRadius: "10px",
                   fontSize: "12px",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                  boxShadow: "0 4px 12px rgba(20,59,66,0.08)",
                 }}
               />
-              <Area
-                type="monotone"
-                dataKey="totalPatients"
-                name="Total Patients"
-                stroke="#3F97A5"
-                strokeWidth={2.5}
-                fillOpacity={1}
-                fill="url(#colorTotal)"
-                dot={{ r: 3.5, fill: "#3F97A5", strokeWidth: 0 }}
-                activeDot={{ r: 5 }}
+              <Bar
+                dataKey="dailyPatients"
+                name="Patients on Date"
+                fill="#7AE4F2"
+                radius={[6, 6, 0, 0]}
+                maxBarSize={24}
               />
               <Area
                 type="monotone"
-                dataKey="admittedPatients"
-                name="Admitted Patients"
-                stroke="#143B42"
+                dataKey="cumulativeTotal"
+                name="Cumulative Total"
+                stroke="#194D54"
                 strokeWidth={2.5}
-                fillOpacity={1}
-                fill="url(#colorAdmitted)"
-                dot={{ r: 3.5, fill: "#143B42", strokeWidth: 0 }}
-                activeDot={{ r: 5 }}
+                fill="url(#cumulativeTeal)"
+                dot={{
+                  r: 3,
+                  fill: "#194D54",
+                  stroke: "#ffffff",
+                  strokeWidth: 1.5,
+                }}
+                activeDot={{
+                  r: 5.5,
+                  fill: "#3F97A5",
+                  stroke: "#ffffff",
+                  strokeWidth: 2,
+                }}
               />
-            </AreaChart>
+            </ComposedChart>
           </ResponsiveContainer>
         )}
       </div>

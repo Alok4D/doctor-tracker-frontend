@@ -85,11 +85,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Row 2: Data Visualization Charts (Patients per Doctor + Date-based Statistics) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div className="lg:col-span-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+        <div className="lg:col-span-6 min-h-[420px] lg:min-h-[calc(100vh-310px)]">
           <PatientsPerDoctorChart />
         </div>
-        <div className="lg:col-span-6">
+        <div className="lg:col-span-6 min-h-[420px] lg:min-h-[calc(100vh-310px)]">
           <PatientsOverviewChart />
         </div>
       </div>

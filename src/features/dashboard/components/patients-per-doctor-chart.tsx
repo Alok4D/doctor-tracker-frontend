@@ -17,8 +17,9 @@ export function PatientsPerDoctorChart() {
   
   const { data, isLoading } = useGetPatientsPerDoctorQuery();
 
-  const chartData = (data?.data || []).slice(0, 6).map((item) => ({
+  const chartData = (data?.data || []).slice(0, 5).map((item) => ({
     name: item.name.replace("Dr. ", ""),
+    fullName: item.name,
     patients: item.patientCount,
     specialization: item.specialization,
   }));
@@ -41,20 +42,19 @@ export function PatientsPerDoctorChart() {
         </div>
       </div>
 
-      <div className="h-56 w-full pt-4">
+      <div className="flex-1 min-h-[330px] w-full pt-5">
         {isLoading ? (
           <div className="h-full flex flex-col justify-between py-2">
-            <div className="flex-1 flex items-end justify-around gap-3 px-4 pb-3 border-b border-l border-slate-100">
-              <Skeleton className="w-7 h-[45%] rounded-t-md" />
-              <Skeleton className="w-7 h-[80%] rounded-t-md" />
-              <Skeleton className="w-7 h-[60%] rounded-t-md" />
-              <Skeleton className="w-7 h-[90%] rounded-t-md" />
-              <Skeleton className="w-7 h-[50%] rounded-t-md" />
-              <Skeleton className="w-7 h-[70%] rounded-t-md" />
+            <div className="flex-1 flex items-end justify-around gap-4 px-4 pb-3 border-b border-slate-100">
+              <Skeleton className="w-11 h-[78%] rounded-lg" />
+              <Skeleton className="w-11 h-[58%] rounded-lg" />
+              <Skeleton className="w-11 h-[90%] rounded-lg" />
+              <Skeleton className="w-11 h-[42%] rounded-lg" />
+              <Skeleton className="w-11 h-[66%] rounded-lg" />
             </div>
             <div className="flex justify-around px-4 pt-2">
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} className="h-3 w-10" />
+              {[...Array(5)].map((_, i) => (
+                <Skeleton key={i} className="h-3 w-12" />
               ))}
             </div>
           </div>
@@ -66,12 +66,13 @@ export function PatientsPerDoctorChart() {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}
-              margin={{ top: 10, right: 10, left: -24, bottom: 0 }}
+              barCategoryGap="24%"
+              margin={{ top: 12, right: 12, left: -20, bottom: 4 }}
             >
               <CartesianGrid
-                strokeDasharray="3 3"
+                strokeDasharray="2 4"
                 vertical={false}
-                stroke="#f1f5f9"
+                stroke="#E2E8F0"
               />
               <XAxis
                 dataKey="name"
@@ -79,6 +80,7 @@ export function PatientsPerDoctorChart() {
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
+                dy={6}
               />
               <YAxis
                 stroke="#94a3b8"
@@ -88,20 +90,28 @@ export function PatientsPerDoctorChart() {
                 allowDecimals={false}
               />
               <Tooltip
+                cursor={{ fill: "#F4FAFA", radius: 8 }}
                 contentStyle={{
                   backgroundColor: "#ffffff",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  border: "1px solid #DCEAEB",
+                  borderRadius: "10px",
                   fontSize: "12px",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                  boxShadow: "0 4px 12px rgba(20,59,66,0.08)",
                 }}
+                formatter={(value) => [`${value} Patients`, "Assigned"]}
+                labelFormatter={(_, payload) =>
+                  payload?.[0]?.payload?.fullName
+                    ? `${payload[0].payload.fullName} (${payload[0].payload.specialization})`
+                    : ""
+                }
               />
               <Bar
                 dataKey="patients"
                 name="Assigned Patients"
-                fill="#3F97A5"
-                radius={[6, 6, 0, 0]}
-                barSize={28}
+                fill="#439BA8"
+                activeBar={{ fill: "#194D54" }}
+                radius={0}
+                maxBarSize={56}
               />
             </BarChart>
           </ResponsiveContainer>

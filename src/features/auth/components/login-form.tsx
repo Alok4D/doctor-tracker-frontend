@@ -87,9 +87,6 @@ export function LoginForm() {
             <label className="block text-sm font-medium text-slate-700">
               Password
             </label>
-            <span className="text-xs text-[#3F97A5] hover:text-[#143B42] hover:underline cursor-pointer">
-              Forgot password?
-            </span>
           </div>
 
           <div className="relative">
