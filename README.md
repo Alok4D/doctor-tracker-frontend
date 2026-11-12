@@ -48,6 +48,13 @@
 
 ---
 
+
+## 🧠 Technical Decisions
+
+1. **Redux Toolkit & RTK Query over Context API**: Chose RTK Query for centralized API caching and declarative tag invalidation (`tagTypes: ['Doctor', 'Patient', 'Dashboard']`). Creating, updating, or deleting a doctor or patient automatically refreshes dashboard KPIs and charts without manual refetch logic.
+2. **Next.js 16 App Router & Layout-Matched UX**: Used `(auth)` and `(dashboard)` route groups with middleware protection (`src/middleware.ts`) to isolate public and admin layouts cleanly, paired with a consistent Teal/Mint (`#3F97A5` / `#143B42` / `#EBF6F6`) UI and layout-matched skeleton loaders across all pages.
+
+
 ## 🚀 Project Setup & Installation Guide
 
 ### Prerequisites
@@ -87,3 +94,4 @@ pnpm run build
 ```
 
 ---
+
