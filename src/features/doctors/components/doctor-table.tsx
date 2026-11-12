@@ -30,10 +30,56 @@ export function DoctorTable({
 }: DoctorTableProps) {
   if (isLoading) {
     return (
-      <div className="space-y-2 p-4">
-        {[...Array(5)].map((_, i) => (
-          <Skeleton key={i} className="h-12 w-full rounded-lg" />
-        ))}
+      <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[280px]">Doctor name</TableHead>
+              <TableHead>Specialization</TableHead>
+              <TableHead>Hospital</TableHead>
+              <TableHead>Contact</TableHead>
+              <TableHead>Assigned patients</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[...Array(6)].map((_, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="h-9 w-9 rounded-full shrink-0" />
+                    <div className="space-y-1.5">
+                      <Skeleton className="h-3.5 w-32" />
+                      <Skeleton className="h-2.5 w-16" />
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-3.5 w-28" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-3.5 w-36" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-3.5 w-28" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-5 w-10 rounded-full" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-5 w-16 rounded-full" />
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-1.5">
+                    <Skeleton className="h-7 w-7 rounded-md" />
+                    <Skeleton className="h-7 w-7 rounded-md" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     );
   }
