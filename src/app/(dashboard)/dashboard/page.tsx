@@ -113,7 +113,6 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Dashboard Top Greeting Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
      
         {/* Time Period Filter Pill Button */}
