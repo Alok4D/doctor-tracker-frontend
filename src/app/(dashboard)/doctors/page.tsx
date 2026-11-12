@@ -12,6 +12,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
 
 export default function DoctorsPage() {
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const {
     doctors,
@@ -41,9 +42,9 @@ export default function DoctorsPage() {
         description={`Manage hospital physicians and view assigned patients (${total} doctors found).`}
       >
         <Button
-          size="sm"
+          size="lg"
           onClick={() => setIsDialogOpen(true)}
-          className="gap-1.5 rounded-full bg-[#3F97A5] hover:bg-[#35818D]"
+          className="gap-1.5 rounded-xs bg-[#3F97A5] hover:bg-[#35818D]"
         >
           <UserPlus className="h-4 w-4" />
           <span>Add doctor</span>
