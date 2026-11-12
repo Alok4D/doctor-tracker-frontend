@@ -9,7 +9,6 @@ import {
   Calendar,
   HeartPulse,
   UserCheck,
-  Shield,
   Edit2,
   Trash2,
   Building2,
