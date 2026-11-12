@@ -1,10 +1,12 @@
-# Doctor Tracker Dashboard
+## <img src="public/logo/doctor-tracker-logo.png" width="38" height="38" style="vertical-align: middle; margin-right: 8px;" /> Doctor Tracker Dashboard
 
 **Welcome to Doctor Tracker – Hospital Doctor & Patient Management System** — a modern, responsive healthcare administration platform designed to streamline doctor profiles, patient records, physician-patient assignments, and real-time hospital analytics.
 
 ## 🔗 Live Links
 - **Live Frontend**: https://doctor-tracker-zone.vercel.app
 - **Live Backend**: https://doctor-tracker-backend-git-main-alok-roys-projects.vercel.app
+
+![Doctor Tracker Dashboard](public/dashboard-demo-images/dashboard-preview.png)
 
 ## 🔑 Demo Login Credentials
 
