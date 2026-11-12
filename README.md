@@ -1,4 +1,4 @@
-## <img src="public/logo/doctor-tracker-logo.png" width="38" height="38" style="vertical-align: middle; margin-right: 8px;" /> Doctor Tracker Dashboard
+# <img src="public/logo/doctor-tracker-logo.png" alt="Doctor Tracker Logo" width="32" align="absmiddle" />&nbsp;&nbsp;Doctor Tracker Dashboard
 
 **Welcome to Doctor Tracker – Hospital Doctor & Patient Management System** — a modern, responsive healthcare administration platform designed to streamline doctor profiles, patient records, physician-patient assignments, and real-time hospital analytics.
 
