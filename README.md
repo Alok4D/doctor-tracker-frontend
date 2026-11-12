@@ -1,69 +1,49 @@
-# Smart ERP Dashboard
+# Doctor Tracker Dashboard
 
-**Welcome to Inventory & Sales Management System** — a modern and user-friendly Smart ERP designed to simplify product inventory, sales tracking, and business management. Easily manage products, Sales History, monitor stock, and view real-time business insights through an intuitive dashboard.
-
+**Welcome to Doctor Tracker – Hospital Doctor & Patient Management System** — a modern, responsive healthcare administration platform designed to streamline doctor profiles, patient records, physician-patient assignments, and real-time hospital analytics.
 
 ## 🔗 Live Links
-- **Live Frontend**: https://smart-erp-dashboard.vercel.app
-
-<div align="center">
-  <img src="public/dashboard-demo-images/image.png" alt="Smart ERP Dashboard Preview" width="100%" />
-</div>
+- **Live Frontend**: https://doctor-tracker-zone.vercel.app
+- **Live Backend**: https://doctor-tracker-backend-git-main-alok-roys-projects.vercel.app
 
 ## 🔑 Demo Login Credentials
 
-| 👑 Admin Account | 💼 Manager Account | 👨‍💼 Employee Account |
-| :--- | :--- | :--- |
-| **Email:** `admin@gmail.com`<br>**Pass:** `123456` | **Email:** `manager@gmail.com`<br>**Pass:** `123456` | **Email:** `employee@gmail.com`<br>**Pass:** `123456` |
+| 👑 Admin Account |
+| :--- |
+| **Email:** `admin@doctortracker.com`<br>**Pass:** `Admin@12345` |
 
 ## ✨ Features Implemented
 
-### 1. Dashboard & Analytics
-- Real-time statistics displaying **Total Products**, **Total Sales**, and **Total Revenue**.
-- **Low Stock Alerts**: Dedicated section showing products that are running out of stock (less than 5 items).
-- Dynamic skeleton loading states for a smooth user experience.
+### 1. Dashboard & Data Visualization
+- **Live KPI Metrics**: Displays real-time **Total Doctors**, **Total Patients**, **Avg. Patients / Doctor**, and **Admitted Patients** with date-range filtering (`All Time`, `Today`, `Last 7 Days`, `Last 30 Days`, `This Year`).
+- **Patients per Doctor Chart**: Interactive bar chart visualizing active patient caseload distribution across doctors.
+- **Date-based Statistics Chart**: Smooth dual-area trend chart tracking total patient registrations and inpatient admissions over time.
+- **Layout-Matched Skeleton Loaders**: Smooth skeleton loading placeholders matching the exact card, chart, and table layouts.
 
-### 2. Authentication & Authorization
-- **JWT-Based Login**: Secure login system with persistent sessions.
-- **Role-Based UI (RBAC)**: Interface elements (e.g., sidebar links, action buttons) are dynamically hidden or shown based on the user's specific permissions (Admin vs Manager vs Employee).
+### 2. Authentication & Route Protection
+- **JWT-Based Login**: Secure admin authentication with Redux Toolkit state management and cookie-based Next.js middleware route protection.
+- **Demo Credentials Helper**: One-click auto-fill button on the login screen for quick evaluation.
 
-### 3. Product Management
-- **Full CRUD**: Create, Read, Update, and Delete products.
-- **Advanced Data Table**: Displays products with Pagination and Real-time Search functionality.
-- **Stock Management**: Tracks Purchase Price, Selling Price, and current Stock Quantity.
-- **Image Support**: Displays product images seamlessly.
+### 3. Doctor Management
+- **Full CRUD**: Create, view, edit, and delete doctor profiles with specialty, hospital, contact details, duty status (`Active` / `Inactive`), and profile photo upload.
+- **Doctor Detail View**: Dedicated `/doctors/[doctorId]` page showing the physician's full profile, assigned patient count, and an interactive table to assign or remove patients directly.
+- **Search, Filter & Pagination**: Real-time debounced search, specialization filtering, and server-backed pagination.
 
-### 4. Sales Management (Point of Sale)
-- **Interactive POS Interface**: Add multiple products to a cart before submitting a sale.
-- **Smart Search**: Search for products by name or SKU. If a search yields exactly one result, the system automatically selects it for faster checkout.
-- **Auto-Clear**: Automatically clears the search bar after adding an item to the cart.
-- **Real-Time Stock Validation**: Prevents users from adding more quantity to the cart than is currently available in stock.
-- **Sales History**: View past sales records with proper pagination.
-
-### 5. Role & Permission Management
-- **Dynamic Roles**: Create new roles (e.g., "Cashier", "Supervisor") directly from the UI.
-- **Granular Permissions**: Assign specific permissions (e.g., `view_products`, `create_sale`, `manage_roles`) to any role.
-
-### 6. Real-Time Updates (WebSockets)
-- **Instant Synchronization**: Uses Socket.io to instantly notify clients of changes (e.g., when a new sale is completed).
-- **Auto-Refresh**: Automatically refreshes dashboard metrics, sales history, and product stock without needing a manual page reload.
-- **Live Notifications**: Displays an interactive toast popup and updates the navbar notification bell whenever real-time events occur.
+### 4. Patient Management
+- **Full CRUD**: Register, inspect, update, and delete patient records with demographics, medical condition, assigned doctor, admission date, status (`Admitted`, `Followup`, `Discharged`, `Transferred`), and profile image support.
+- **Patient Detail View**: Dedicated `/patients/[patientId]` page with Clinical & Admission Summary and Assigned Physician card with direct navigation to the doctor's profile.
 
 ## 🛠️ Tech Stack
-- **React 18** (UI Framework)
+- **Next.js 16** (App Router, Turbopack)
+- **React 19** (UI Library)
 - **TypeScript** (Type Safety)
-- **Redux Toolkit & RTK Query** (State Management & API Data Fetching)
-- **Redux Persist** (State Persistence)
-- **React Router v6** (Client-side Routing)
-- **React Hook Form** (Form Handling)
-- **Zod** (Schema Validation)
-- **shadcn/ui** (UI Components)
-- **Tailwind CSS** (Styling)
+- **Redux Toolkit & RTK Query** (State Management & API Caching)
+- **React Hook Form & Zod** (Form Handling & Schema Validation)
+- **Recharts** (Interactive Data Visualization)
+- **TanStack React Table** (Data Tables)
+- **Tailwind CSS v4** (Styling)
 - **Lucide React** (Icons)
-- **SweetAlert2** (Toast & Alert Modals)
-- **Socket.io-client** (Real-time WebSocket Events)
-- **JWT Decode** (Token Management)
-- **Vite** (Build Tool)
+- **Sonner** (Toast Notifications)
 
 ---
 
@@ -71,37 +51,38 @@
 
 ### Prerequisites
 - Node.js (v18 or higher)
-- npm or yarn
+- pnpm (`pnpm@10.29.3` recommended)
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Alok4D/erp-inventory-frontend.git
-cd erp-inventory-frontend
+git clone https://github.com/Alok4D/doctor-tracker-frontend.git
+cd doctor-tracker-frontend
 ```
 
 ### 2. Install dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### 3. Configure Environment Variables
-Create a `.env` file in the root directory of the frontend project:
+Create a `.env.local` file in the root directory of the frontend project:
 ```env
-VITE_BASE_URL=http://localhost:5000/api/v1
+NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
+NEXT_PUBLIC_APP_NAME="Doctor Tracker"
 ```
-*(Note: If your backend is deployed, replace the URL with your live backend API link)*
+*(Note: For production/Vercel deployments, set `NEXT_PUBLIC_API_URL` to your live backend API URL.)*
 
 ### 4. Run the application
 Start the development server:
 ```bash
-npm run dev
+pnpm run dev
 ```
-The application will start on `http://localhost:5173`.
+The application will start on `http://localhost:3000`.
 
 ### 5. Build for Production
-To create a production build:
+To create an optimized production build:
 ```bash
-npm run build
+pnpm run build
 ```
 
 ---

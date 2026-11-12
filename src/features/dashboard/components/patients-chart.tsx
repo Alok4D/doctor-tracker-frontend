@@ -116,11 +116,11 @@ export function PatientsOverviewChart() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#EBF6F6] text-[#3F97A5]">
-            <CalendarDays className="h-4 w-4" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EBF6F6] text-[#3F97A5]">
+            <CalendarDays className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-[#143B42]">
+            <h3 className="text-lg font-medium text-[#143B42]">
               Date-based Statistics
             </h3>
             <p className="text-[11px] text-slate-400">
