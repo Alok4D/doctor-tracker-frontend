@@ -9,7 +9,7 @@ import {
 
 export const dashboardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // GET Summary Stats (supports optional date range: all, today, 7d, 30d, year)
+  
     getDashboardStats: builder.query<ApiResponse<IDashboardStats>, string | void>({
       query: (range) => ({
         url: range ? `/dashboard/stats?range=${range}` : "/dashboard/stats",
@@ -18,7 +18,7 @@ export const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["Dashboard", "Doctor", "Patient"],
     }),
 
-    // GET Date-based Patient Statistics
+   
     getPatientsOverview: builder.query<ApiResponse<IPatientsOverviewResponse>, string | void>({
       query: (timeframe) => ({
         url: timeframe
@@ -29,7 +29,7 @@ export const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["Dashboard", "Patient"],
     }),
 
-    // GET Doctors by Specialty Breakdown
+   
     getSpecialtyBreakdown: builder.query<ApiResponse<ISpecialtyBreakdownResponse>, void>({
       query: () => ({
         url: "/dashboard/specialty-stats",
@@ -38,7 +38,7 @@ export const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["Dashboard", "Doctor"],
     }),
 
-    // GET Patients per Doctor Workload
+    
     getPatientsPerDoctor: builder.query<ApiResponse<IPatientsPerDoctor[]>, void>({
       query: () => ({
         url: "/dashboard/patients-per-doctor",

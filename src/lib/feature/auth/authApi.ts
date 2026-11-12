@@ -8,7 +8,7 @@ import {
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // POST Login Mutation
+   
     login: builder.mutation<LoginResponse, LoginPayload>({
       query: (payload) => ({
         url: "/auth/login",
@@ -18,7 +18,7 @@ export const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
-    // GET Me Query
+ 
     getMe: builder.query<UserProfileResponse, void>({
       query: () => ({
         url: "/auth/me",
@@ -27,7 +27,7 @@ export const authApi = baseApi.injectEndpoints({
       providesTags: ["User"],
     }),
 
-    // POST Logout Mutation
+   
     logout: builder.mutation<ApiResponse<null>, void>({
       query: () => ({
         url: "/auth/logout",
@@ -39,5 +39,5 @@ export const authApi = baseApi.injectEndpoints({
   overrideExisting: true,
 });
 
-// Export auto-generated hooks
+
 export const { useLoginMutation, useGetMeQuery, useLogoutMutation } = authApi;

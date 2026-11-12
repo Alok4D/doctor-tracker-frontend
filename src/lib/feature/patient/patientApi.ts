@@ -10,7 +10,7 @@ import {
 
 export const patientApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // GET All Patients with Filtering & Pagination
+    
     getPatients: builder.query<ApiResponse<IPatient[]>, IPatientFilterParams | void>({
       query: (params) => {
         const queryParams = new URLSearchParams();
@@ -45,7 +45,7 @@ export const patientApi = baseApi.injectEndpoints({
       providesTags: ["Patient"],
     }),
 
-    // GET Single Patient by ID
+   
     getPatientById: builder.query<ApiResponse<IPatient>, string>({
       query: (id) => ({
         url: `/patients/${id}`,
@@ -54,7 +54,7 @@ export const patientApi = baseApi.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Patient", id }, "Patient"],
     }),
 
-    // POST Create Patient (multipart/form-data with optional photo)
+  
     createPatient: builder.mutation<ApiResponse<IPatient>, ICreatePatientPayload>({
       query: (payload) => ({
         url: "/patients",
@@ -64,7 +64,7 @@ export const patientApi = baseApi.injectEndpoints({
       invalidatesTags: ["Patient", "Doctor", "Dashboard"],
     }),
 
-    // PATCH Update Patient (multipart/form-data with optional photo)
+  
     updatePatient: builder.mutation<
       ApiResponse<IPatient>,
       { id: string; body: IUpdatePatientPayload }
@@ -82,7 +82,7 @@ export const patientApi = baseApi.injectEndpoints({
       ],
     }),
 
-    // DELETE Patient
+   
     deletePatient: builder.mutation<ApiResponse<IPatient>, string>({
       query: (id) => ({
         url: `/patients/${id}`,
