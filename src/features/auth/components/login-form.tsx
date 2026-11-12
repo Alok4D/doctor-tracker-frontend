@@ -50,8 +50,8 @@ export function LoginForm() {
   };
 
   const fillDemoCredentials = () => {
-    setValue("email", "admin@doctor-tracker.com");
-    setValue("password", "password123");
+    setValue("email", "admin@doctortracker.com");
+    setValue("password", "Admin@12345");
     toast.info("Demo credentials filled");
   };
 
@@ -73,7 +73,7 @@ export function LoginForm() {
           <input
             type="email"
             {...register("email")}
-            placeholder="admin@doctor-tracker.com"
+            placeholder="admin@doctortracker.com"
             className="block w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#3F97A5] focus:border-transparent transition-all shadow-2xs"
           />
           {errors.email && (
@@ -139,7 +139,7 @@ export function LoginForm() {
           onClick={fillDemoCredentials}
           className="mt-2 text-xs font-semibold text-[#3F97A5] hover:text-[#143B42] underline cursor-pointer"
         >
-          Auto-fill: admin@doctor-tracker.com
+          Auto-fill: admin@doctortracker.com
         </button>
       </div>
     </div>

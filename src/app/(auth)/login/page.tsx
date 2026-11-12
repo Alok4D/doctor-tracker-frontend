@@ -5,11 +5,11 @@ import Image from "next/image";
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen font-sans">
-      {/* Left Side - Clean Project-Related Hero Image */}
-      <div className="hidden lg:block lg:w-1/2 relative overflow-hidden bg-[#EBF6F6]">
+      <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
         <Image
           src="/images/premium_photo-1681843004557-f3128f91aeb7.avif"
           alt="Doctor Tracker Healthcare Management"
+          draggable={false}
           fill
           priority
           className="object-cover object-top"
