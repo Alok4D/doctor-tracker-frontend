@@ -12,6 +12,7 @@ const defaultSpecialtyData = [
 ];
 
 export function DoctorsBySpecialtyChart() {
+  
   const { data, isLoading } = useGetSpecialtyBreakdownQuery();
 
   const specialtyData =
