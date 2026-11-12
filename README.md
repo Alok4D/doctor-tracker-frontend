@@ -7,11 +7,6 @@
 
 ![Doctor Tracker Dashboard](public/dashboard-demo-images/dashboard-preview.png)
 
-## 🔑 Demo Login Credentials
-
-| 👑 Admin Account |
-| :--- |
-| **Email:** `admin@doctortracker.com`<br>**Pass:** `Admin@12345` |
 
 ## ✨ Features Implemented
 
