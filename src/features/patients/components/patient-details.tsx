@@ -138,20 +138,20 @@ export function PatientDetails({
           {/* Action Buttons */}
           <div className="flex items-center gap-2.5 shrink-0">
             <Button
-              size="sm"
+              size="lg"
               variant="outline"
               onClick={() => setIsEditOpen(true)}
-              className="rounded-full gap-1.5"
+              className="rounded-md gap-1.5"
             >
               <Edit2 className="h-3.5 w-3.5 text-[#3F97A5]" />
               <span>Edit record</span>
             </Button>
             <Button
-              size="sm"
+              size="lg"
               variant="destructive"
               onClick={onDelete}
               disabled={isDeleting}
-              className="rounded-full gap-1.5"
+              className="rounded-md gap-1.5"
             >
               <Trash2 className="h-3.5 w-3.5" />
               <span>{isDeleting ? "Removing..." : "Delete"}</span>
@@ -165,7 +165,7 @@ export function PatientDetails({
         {/* Left: Clinical Summary Cards */}
         <div className="lg:col-span-7 rounded-2xl border border-[#E5ECEE] bg-white p-6 shadow-xs space-y-5">
           <div className="border-b border-slate-100 pb-3">
-            <h2 className="text-sm font-bold text-[#143B42]">
+            <h2 className="text-lg font-medium text-[#143B42]">
               Clinical & Admission Summary
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -219,7 +219,7 @@ export function PatientDetails({
               </div>
             </div>
 
-            <div className="rounded-xl border border-[#DCEAEB] bg-[#F7FAFA] p-4 flex items-start gap-3">
+            {/* <div className="rounded-xl border border-[#DCEAEB] bg-[#F7FAFA] p-4 flex items-start gap-3">
               <div className="p-2 rounded-lg bg-[#EBF6F6] text-[#143B42] shrink-0">
                 <Shield className="h-4 w-4" />
               </div>
@@ -231,7 +231,7 @@ export function PatientDetails({
                   Care Guide Standard Medical
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -240,7 +240,7 @@ export function PatientDetails({
           <div>
             <div className="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-bold text-[#143B42]">
+                <h2 className="text-lg font-medium text-[#143B42]">
                   Assigned Physician
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
