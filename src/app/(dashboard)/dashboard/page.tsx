@@ -53,7 +53,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Row 1: Core KPI Metric Cards (Total Doctors, Total Patients, Patients per Doctor, Admitted Patients) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatsCard
           title="Total Doctors"
           value={stats?.totalDoctors ?? 0}
