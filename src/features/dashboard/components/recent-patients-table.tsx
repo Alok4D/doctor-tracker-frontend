@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Trash2, Edit2, Eye } from "lucide-react";
 import { IPatient } from "@/types/patient.types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface RecentPatientsTableProps {
   patients: IPatient[];
@@ -56,7 +57,32 @@ export function RecentPatientsTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {patients.slice(0, 5).map((patient) => {
+            {isLoading ? (
+              [...Array(5)].map((_, i) => (
+                <tr key={i}>
+                  <td className="py-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <Skeleton className="h-7 w-7 rounded-full shrink-0" />
+                      <Skeleton className="h-3.5 w-28" />
+                    </div>
+                  </td>
+                  <td className="py-2.5">
+                    <Skeleton className="h-3.5 w-24" />
+                  </td>
+                  <td className="py-2.5">
+                    <Skeleton className="h-4 w-16 rounded-full" />
+                  </td>
+                  <td className="py-2.5 text-right">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <Skeleton className="h-6 w-6 rounded-md" />
+                      <Skeleton className="h-6 w-6 rounded-md" />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <>
+                {patients.slice(0, 5).map((patient) => {
               const patId = patient._id;
               const statusStyles = getStatusColor(patient.status);
               const [textColor, dotColor] = statusStyles.split(" ");
@@ -133,15 +159,17 @@ export function RecentPatientsTable({
                 </tr>
               );
             })}
-            {patients.length === 0 && (
+            {!isLoading && patients.length === 0 && (
               <tr>
                 <td
                   colSpan={4}
                   className="py-4 text-center text-slate-400 text-xs"
                 >
-                  {isLoading ? "Loading patients..." : "No patients found"}
+                  No patients found
                 </td>
               </tr>
+            )}
+              </>
             )}
           </tbody>
         </table>

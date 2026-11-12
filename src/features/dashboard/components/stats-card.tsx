@@ -1,107 +1,85 @@
 "use client";
 
-import { LucideIcon } from "lucide-react";
-import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import { LucideIcon, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface SparklineStatsCardProps {
+interface StatsCardProps {
   title: string;
   value: string | number;
   change: string;
   icon: LucideIcon;
-  sparklineData: { v: number }[];
-  theme: "blue" | "emerald" | "purple" | "orange";
+  isLoading?: boolean;
+  className?: string;
 }
 
-const themeStyles = {
-  blue: {
-    bg: "bg-[#F4FAFA] border-[#D6EAEB]",
-    iconBg: "bg-[#143B42] text-white",
-    stroke: "#3F97A5",
-    fill: "#8DC9D1",
-  },
-  emerald: {
-    bg: "bg-[#F2FAF7] border-[#D0ECE2]",
-    iconBg: "bg-[#3F97A5] text-white",
-    stroke: "#10b981",
-    fill: "#a7f3d0",
-  },
-  purple: {
-    bg: "bg-[#F4F8F9] border-[#D7E4E6]",
-    iconBg: "bg-[#1E4D56] text-white",
-    stroke: "#143B42",
-    fill: "#9AC2C8",
-  },
-  orange: {
-    bg: "bg-[#F5FAFA] border-[#D5EBEC]",
-    iconBg: "bg-[#2C7B88] text-white",
-    stroke: "#2C7B88",
-    fill: "#9FD6DF",
-  },
-};
-
+/**
+ * KPI Metric Card matching the Figma design:
+ * Clean white top area with Dark Slate Teal icon box on the right,
+ * and a soft-mint bottom trend footer bar with a Teal ArrowUpRight pill.
+ */
 export function StatsCard({
   title,
   value,
   change,
   icon: Icon,
-  sparklineData,
-  theme = "blue",
-}: SparklineStatsCardProps) {
-  const styles = themeStyles[theme];
+  isLoading = false,
+  className,
+}: StatsCardProps) {
+  if (isLoading) {
+    return (
+      <div
+        className={cn(
+          "rounded-2xl border border-[#E5ECEE] bg-white shadow-2xs overflow-hidden flex flex-col justify-between",
+          className
+        )}
+      >
+        <div className="p-5 flex items-start justify-between gap-3">
+          <div className="space-y-2.5 flex-1">
+            <Skeleton className="h-3.5 w-24 rounded-md" />
+            <Skeleton className="h-8 w-16 rounded-md" />
+          </div>
+          <Skeleton className="h-10 w-10 rounded-xl shrink-0" />
+        </div>
+        <div className="bg-[#F2F8F8] px-5 py-2.5 flex items-center gap-2.5 border-t border-[#E8F4F4]">
+          <Skeleton className="h-5 w-5 rounded-full shrink-0" />
+          <Skeleton className="h-3.5 w-32 rounded-md" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       className={cn(
-        "relative rounded-xl border bg-white p-4 shadow-xs overflow-hidden flex flex-col justify-between",
-        styles.bg
+        "rounded-2xl border border-[#E5ECEE] bg-white shadow-2xs overflow-hidden flex flex-col justify-between transition-colors hover:border-[#CBE6E8]",
+        className
       )}
     >
-      <div className="flex items-center gap-3">
-        {/* Icon box */}
-        <div
-          className={cn(
-            "flex h-11 w-11 items-center justify-center rounded-xl shrink-0 shadow-2xs",
-            styles.iconBg
-          )}
-        >
-          <Icon className="h-5 w-5 stroke-2" />
+      {/* Top Metric Area */}
+      <div className="p-5 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[13px] font-medium text-slate-500 truncate">
+            {title}
+          </p>
+          <p className="text-[28px] leading-tight font-bold tracking-tight text-[#19464E] mt-1.5">
+            {value}
+          </p>
         </div>
 
-        {/* Value and Title */}
-        <div>
-          <p className="text-xs font-medium text-slate-500">{title}</p>
-          <div className="flex items-baseline gap-2 mt-0.5">
-            <span className="text-2xl font-bold tracking-tight text-[#143B42]">
-              {value}
-            </span>
-            <span className="text-xs font-semibold text-[#3F97A5]">
-              {change}
-            </span>
-          </div>
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#19464E] text-white shrink-0 shadow-2xs">
+          <Icon className="h-5 w-5 stroke-[1.75]" />
         </div>
       </div>
 
-      {/* Sparkline Wave Chart at bottom */}
-      <div className="h-10 w-full mt-2 -mb-1 -mx-2">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={sparklineData}>
-            <defs>
-              <linearGradient id={`grad-${theme}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={styles.fill} stopOpacity={0.6} />
-                <stop offset="100%" stopColor={styles.fill} stopOpacity={0.05} />
-              </linearGradient>
-            </defs>
-            <Area
-              type="monotone"
-              dataKey="v"
-              stroke={styles.stroke}
-              strokeWidth={2}
-              fill={`url(#grad-${theme})`}
-              isAnimationActive={false}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+      {/* Bottom Soft-Mint Trend Strip */}
+      <div className="bg-[#D8ECEC]/75 px-5 py-2.5 flex items-center gap-2.5 border-t border-[#E8F4F4]">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#4598A6] text-white shrink-0">
+          <ArrowUpRight className="h-3 w-3 stroke-[2.5]" />
+        </span>
+        <span className="text-xs font-medium text-[#19464E] truncate">
+          {change}
+        </span>
       </div>
     </div>
   );

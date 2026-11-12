@@ -37,13 +37,14 @@ import {
 import { toast } from "sonner";
 
 export default function DashboardPage() {
+  
   const [timeRange, setTimeRange] = useState("Last 30 Days");
   const [isAddDoctorOpen, setIsAddDoctorOpen] = useState(false);
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState<IPatient | null>(null);
 
   // RTK Queries
-  const { data: statsData } = useGetDashboardStatsQuery();
+  const { data: statsData, isLoading: isLoadingStats } = useGetDashboardStatsQuery();
   const { data: doctorsData, isLoading: isLoadingDoctors } = useGetDoctorsQuery({ limit: 5 });
   const { data: patientsData, isLoading: isLoadingPatients } = useGetPatientsQuery({ limit: 5 });
 
@@ -57,20 +58,6 @@ export default function DashboardPage() {
   const stats = statsData?.data;
   const topDoctors = doctorsData?.data || [];
   const recentPatients = patientsData?.data || [];
-
-  // Sparkline data
-  const sparklineDoctors = [
-    { v: 16 }, { v: 18 }, { v: 21 }, { v: 19 }, { v: 22 }, { v: 20 }, { v: 24 },
-  ];
-  const sparklinePatients = [
-    { v: 920 }, { v: 990 }, { v: 1040 }, { v: 1010 }, { v: 1140 }, { v: 1190 }, { v: 1250 },
-  ];
-  const sparklineAppointments = [
-    { v: 680 }, { v: 740 }, { v: 710 }, { v: 800 }, { v: 830 }, { v: 870 }, { v: 892 },
-  ];
-  const sparklineActive = [
-    { v: 18 }, { v: 19 }, { v: 21 }, { v: 20 }, { v: 22 }, { v: 21 }, { v: 22 },
-  ];
 
   const handleCreateDoctor = async (data: DoctorSubmitPayload) => {
     try {
@@ -128,18 +115,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Dashboard Top Greeting Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-              Dashboard
-            </h1>
-            <span className="text-xl">👋</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Welcome back! Here&apos;s what&apos;s happening with your healthcare system today.
-          </p>
-        </div>
-
+     
         {/* Time Period Filter Pill Button */}
         <div className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer self-start sm:self-auto">
           <CalendarDays className="h-4 w-4 text-slate-500" />
@@ -156,39 +132,35 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Row 1: Four Sparkline KPI Metric Cards */}
+      {/* Row 1: Four KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
           title="Total Doctors"
-          value={stats?.totalDoctors ?? 24}
-          change="+ 12%"
+          value={stats?.totalDoctors ?? 0}
+          change="Registered physicians"
           icon={UserCheck}
-          sparklineData={sparklineDoctors}
-          theme="blue"
+          isLoading={isLoadingStats}
         />
         <StatsCard
           title="Total Patients"
-          value={stats?.totalPatients ?? 1250}
-          change="+ 8%"
+          value={stats?.totalPatients ?? 0}
+          change="All patient records"
           icon={Users}
-          sparklineData={sparklinePatients}
-          theme="emerald"
+          isLoading={isLoadingStats}
         />
         <StatsCard
-          title="Appointments"
-          value={stats?.appointments ?? 892}
-          change="+ 15%"
+          title="Admitted Patients"
+          value={stats?.admittedPatients ?? 0}
+          change="Currently admitted"
           icon={Calendar}
-          sparklineData={sparklineAppointments}
-          theme="purple"
+          isLoading={isLoadingStats}
         />
         <StatsCard
           title="Active Doctors"
-          value={stats?.activeDoctors ?? 22}
-          change="+ 5%"
+          value={stats?.activeDoctors ?? 0}
+          change="Available on duty"
           icon={CheckCircle2}
-          sparklineData={sparklineActive}
-          theme="orange"
+          isLoading={isLoadingStats}
         />
       </div>
 
