@@ -13,11 +13,11 @@
     <th align="center">Mobile — Responsive Dashboard</th>
   </tr>
   <tr>
-    <td align="center" width="68%">
+    <td align="center" width="64%">
       <img src="public/dashboard-demo-images/dashboard-preview.png" alt="Doctor Tracker Desktop Dashboard" width="100%" />
     </td>
-    <td align="center" width="32%">
-      <img src="public/dashboard-demo-images/mobile-preview.png" alt="Doctor Tracker Mobile View" width="220" />
+    <td align="center" width="36%">
+      <img src="public/dashboard-demo-images/mobile-preview.png" alt="Doctor Tracker Mobile View" width="100%" />
     </td>
   </tr>
 </table>
