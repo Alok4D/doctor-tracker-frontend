@@ -1,5 +1,6 @@
 import { LoginForm } from "@/features/auth/components/login-form";
 import { BrandLogo } from "@/components/shared/brand-logo";
+import Image from "next/image";
 
 export default function LoginPage() {
   return (
@@ -8,10 +9,12 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2400&auto=format&fit=crop"
             alt="Hospital Doctor Management"
             className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-35"
+            width={2400}
+            height={1600}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-[#3F97A5]/45 via-[#143B42]/75 to-[#143B42]/95" />
         </div>
