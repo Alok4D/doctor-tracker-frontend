@@ -66,9 +66,9 @@ export default function PatientsPage() {
         description={`Centralized hospital patient records with condition filtering and physician assignments (${total} patients found).`}
       >
         <Button
-          size="sm"
+          size="lg"
           onClick={handleOpenAdd}
-          className="gap-1.5 rounded-full bg-[#3F97A5] hover:bg-[#35818D]"
+          className="gap-1.5 rounded-xs bg-[#3F97A5] hover:bg-[#35818D]"
         >
           <UserPlus className="h-4 w-4" />
           <span>Register patient</span>
