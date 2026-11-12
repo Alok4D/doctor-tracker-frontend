@@ -27,16 +27,16 @@ export default function DashboardPage() {
       {/* Dashboard Top Header & Date Range Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#143B42]">
+          <h1 className="text-2xl font-medium tracking-tight text-[#143B42]">
             Dashboard
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             Real-time hospital analytics: doctors, patients, caseloads, and date-based statistics.
           </p>
         </div>
 
         {/* Date-based Statistics Filter */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#DCEAEB] bg-white px-3.5 py-1.5 text-xs font-medium text-[#143B42] shadow-2xs hover:bg-[#F4FAFA] transition-colors cursor-pointer self-start sm:self-auto">
+        <div className="inline-flex items-center gap-2 rounded-md border border-[#DCEAEB] bg-white px-4 py-2.5 text-sm font-medium text-[#143B42] hover:bg-[#F4FAFA] transition-colors cursor-pointer self-start sm:self-auto shadow-sm">
           <CalendarDays className="h-4 w-4 text-[#3F97A5]" />
           <select
             value={timeRange}
