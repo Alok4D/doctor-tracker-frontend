@@ -4,7 +4,6 @@
 
 ## 🔗 Live Links
 - **Live Frontend**: https://doctor-tracker-zone.vercel.app
-- **Live Backend**: https://doctor-tracker-backend-git-main-alok-roys-projects.vercel.app
 
 ![Doctor Tracker Dashboard](public/dashboard-demo-images/dashboard-preview.png)
 
