@@ -26,8 +26,8 @@ export function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "admin@doctor-tracker.com",
-      password: "password123",
+      email: "admin@doctortracker.com",
+      password: "Admin@12345",
     },
   });
 
