@@ -183,15 +183,18 @@ export function PatientForm({
 
       <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
         <Button
+        className="rounded-xs"
           type="button"
           variant="outline"
-          size="sm"
+          size="lg"
           onClick={onCancel}
           disabled={busy}
         >
           Cancel
         </Button>
-        <Button type="submit" size="sm" disabled={busy}>
+        <Button
+         className="rounded-xs"
+        type="submit" size="lg" disabled={busy}>
           {busy ? "Saving..." : "Save patient record"}
         </Button>
       </div>

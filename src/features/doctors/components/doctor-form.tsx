@@ -64,7 +64,7 @@ export function DoctorForm({
       />
 
       <div>
-        <label className="block text-xs font-medium text-slate-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 mb-1">
           Doctor name
         </label>
         <Input
@@ -72,13 +72,13 @@ export function DoctorForm({
           placeholder="e.g. Dr. Jennifer Lawrence"
         />
         {errors.name && (
-          <p className="mt-1 text-xs text-rose-600">{errors.name.message}</p>
+          <p className="mt-1 text-sm text-rose-600">{errors.name.message}</p>
         )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-slate-700 mb-1">
+          <label className="block text-sm font-medium text-slate-700 mb-1">
             Specialization
           </label>
           <Select {...register("specialization")}>
@@ -89,14 +89,14 @@ export function DoctorForm({
             ))}
           </Select>
           {errors.specialization && (
-            <p className="mt-1 text-xs text-rose-600">
+            <p className="mt-1 text-sm text-rose-600">
               {errors.specialization.message}
             </p>
           )}
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-slate-700 mb-1">
+          <label className="block text-sm font-medium text-slate-700 mb-1">
             Status
           </label>
           <Select {...register("status")}>
@@ -107,7 +107,7 @@ export function DoctorForm({
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-slate-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 mb-1">
           Hospital / Medical center
         </label>
         <Input
@@ -115,23 +115,23 @@ export function DoctorForm({
           placeholder="e.g. Square Hospital Ltd."
         />
         {errors.hospital && (
-          <p className="mt-1 text-xs text-rose-600">{errors.hospital.message}</p>
+          <p className="mt-1 text-sm text-rose-600">{errors.hospital.message}</p>
         )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-slate-700 mb-1">
+          <label className="block text-sm font-medium text-slate-700 mb-1">
             Phone number
           </label>
           <Input {...register("phone")} placeholder="+880 1711..." />
           {errors.phone && (
-            <p className="mt-1 text-xs text-rose-600">{errors.phone.message}</p>
+            <p className="mt-1 text-sm text-rose-600">{errors.phone.message}</p>
           )}
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-slate-700 mb-1">
+          <label className="block text-sm font-medium text-slate-700 mb-1">
             Email address
           </label>
           <Input
@@ -140,22 +140,25 @@ export function DoctorForm({
             placeholder="doctor@hospital.com"
           />
           {errors.email && (
-            <p className="mt-1 text-xs text-rose-600">{errors.email.message}</p>
+            <p className="mt-1 text-sm text-rose-600">{errors.email.message}</p>
           )}
         </div>
       </div>
 
       <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
         <Button
+        className="rounded-xs"
           type="button"
           variant="outline"
-          size="sm"
+          size="lg"
           onClick={onCancel}
           disabled={busy}
         >
           Cancel
         </Button>
-        <Button type="submit" size="sm" disabled={busy}>
+        <Button type="submit" size="lg" disabled={busy}
+        className="rounded-xs"
+        >
           {busy ? "Saving..." : "Save doctor"}
         </Button>
       </div>

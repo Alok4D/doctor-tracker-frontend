@@ -37,7 +37,7 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
         onClick={() => onOpenChange(false)}
       />
       {/* Dialog box */}
-      <div className="relative z-50 w-full max-w-lg rounded-xl border border-slate-200 bg-white p-6 shadow-md transition-all animate-scale-up">
+      <div className="relative z-50 w-full max-w-lg rounded-xs border border-slate-200 bg-white p-6 shadow-xs transition-all animate-scale-up">
         {children}
       </div>
     </div>
@@ -62,7 +62,7 @@ export function DialogTitle({
 }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h2
-      className={cn("text-lg font-semibold text-slate-900 leading-none", className)}
+      className={cn("text-xl font-medium text-slate-900 leading-none", className)}
       {...props}
     />
   );
