@@ -110,14 +110,28 @@ export function Sidebar({
                 )}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <item.icon
-                    className={cn(
-                      "w-[18px] h-[18px] shrink-0",
-                      isActive
-                        ? "text-white"
-                        : "text-slate-500 group-hover:text-[#3F97A5]"
-                    )}
-                  />
+                  {item.iconSrc ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.iconSrc}
+                      alt={item.title}
+                      className={cn(
+                        "w-[18px] h-[18px] object-contain shrink-0 transition-all",
+                        isActive && "brightness-0 invert"
+                      )}
+                    />
+                  ) : (
+                    item.icon && (
+                      <item.icon
+                        className={cn(
+                          "w-[18px] h-[18px] shrink-0",
+                          isActive
+                            ? "text-white"
+                            : "text-slate-500 group-hover:text-[#3F97A5]"
+                        )}
+                      />
+                    )
+                  )}
                   {(!isCollapsed || isMobileOpen) && (
                     <span className="text-sm truncate">{item.title}</span>
                   )}

@@ -1,9 +1,4 @@
-import {
-  LayoutDashboard,
-  UserCheck,
-  Users,
-  Settings,
-} from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { NavItem } from "@/types/navigation.types";
 
 export const primaryNavItems: NavItem[] = [
@@ -15,12 +10,11 @@ export const primaryNavItems: NavItem[] = [
   {
     title: "Doctors",
     href: "/doctors",
-    icon: UserCheck,
+    iconSrc: "/icons/doctor-icons.png",
   },
   {
     title: "Patients",
     href: "/patients",
-    icon: Users,
+    iconSrc: "/icons/patients-icons.png",
   },
 ];
-
