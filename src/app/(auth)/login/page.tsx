@@ -18,8 +18,8 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col justify-center px-12 xl:px-16 text-white">
           <div className="inline-flex items-center self-start rounded-xl bg-white px-4 py-2.5 shadow-md mb-7">
             <BrandLogo
-              iconClassName="h-7 w-7"
-              textClassName="text-xl font-bold text-[#143B42]"
+              iconClassName="h-8 w-8"
+              textClassName="text-xl font-bold text-[#1F4B53]"
             />
           </div>
 
@@ -34,7 +34,15 @@ export default function LoginPage() {
 
       {/* Right Side - Form */}
       <div className="flex w-full lg:w-1/2 items-center justify-center p-6 sm:p-12 lg:p-20 bg-[#F7F9FA]">
-        <LoginForm />
+        <div className="w-full max-w-md space-y-6">
+          <div className="flex justify-center lg:hidden">
+            <BrandLogo
+              iconClassName="h-9 w-9"
+              textClassName="text-xl font-bold text-[#1F4B53]"
+            />
+          </div>
+          <LoginForm />
+        </div>
       </div>
     </div>
   );

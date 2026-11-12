@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Menu, Bell, Check, BellRing, Search } from "lucide-react";
+import { Menu, Bell, Check, BellRing } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
+import { BrandLogo } from "@/components/shared/brand-logo";
 
 interface HeaderProps {
   isCollapsed: boolean;
@@ -88,7 +89,13 @@ export function Header({
           <Menu className="w-5 h-5" />
         </button>
 
-        <span className="text-sm font-medium text-[#143B42]">
+        <div className="md:hidden">
+          <BrandLogo
+            iconClassName="h-7 w-7"
+            textClassName="text-base font-bold text-[#1F4B53]"
+          />
+        </div>
+        <span className="hidden md:inline text-sm font-medium text-[#143B42]">
           Welcome to Doctor Tracker
         </span>
       </div>

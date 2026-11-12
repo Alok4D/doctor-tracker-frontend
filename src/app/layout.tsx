@@ -14,6 +14,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Doctor Tracker - Hospital Administration Dashboard",
   description: "Secure Administrative Management Portal for Doctors and Patients",
+  icons: {
+    icon: [
+      { url: "/logo/doctor-tracker-logo.svg", type: "image/svg+xml" },
+      { url: "/logo/Untitled-1.png", type: "image/png" },
+    ],
+    apple: "/logo/Untitled-1.png",
+  },
 };
 
 export default function RootLayout({
