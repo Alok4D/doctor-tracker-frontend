@@ -4,19 +4,18 @@ export interface IDashboardStats {
   totalPatients: number;
   admittedPatients: number;
   avgPatientsPerDoctor: number;
-  appointments: number;
-  totalEarnings: string;
 }
 
-export interface IPatientsOverviewTrend {
-  week: string;
-  newPatients: number;
-  returningPatients: number;
+export interface IDateStatItem {
+  date: string;
+  totalPatients: number;
+  admittedPatients: number;
+  otherPatients: number;
 }
 
 export interface IPatientsOverviewResponse {
   statusBreakdown: { _id: string; count: number }[];
-  weeklyOverview: IPatientsOverviewTrend[];
+  dateStats: IDateStatItem[];
 }
 
 export interface ISpecialtyBreakdownItem {
@@ -38,4 +37,3 @@ export interface IPatientsPerDoctor {
   hospital: string;
   patientCount: number;
 }
-
