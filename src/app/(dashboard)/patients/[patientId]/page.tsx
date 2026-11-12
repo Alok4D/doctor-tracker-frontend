@@ -81,7 +81,7 @@ export default function PatientDetailPage({
                 <img
                   src={patient.avatarUrl}
                   alt={patient.name}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover object-top"
                 />
               ) : (
                 patient.name.slice(0, 2).toUpperCase()

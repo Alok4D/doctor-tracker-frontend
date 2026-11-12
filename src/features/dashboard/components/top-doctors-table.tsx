@@ -55,7 +55,7 @@ export function TopDoctorsTable({
                           <img
                             src={doctor.avatarUrl}
                             alt={doctor.name}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover object-top"
                           />
                         ) : (
                           doctor.name.slice(0, 2)

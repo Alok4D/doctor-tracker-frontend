@@ -19,6 +19,7 @@ import { PatientDialog } from "@/features/patients/components/patient-dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface DoctorDetailsProps {
   doctor: IDoctor;
@@ -50,62 +51,72 @@ export function DoctorDetails({
       </div>
 
       {/* Doctor Profile Banner Card */}
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-          <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-[#EBF6F6] border-2 border-[#CBE6E8] flex items-center justify-center text-lg font-bold text-[#143B42] shrink-0 overflow-hidden">
+      <div className="rounded-xl border border-[#E5ECEE] bg-white p-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+            <div className="h-28 w-28 sm:h-32 sm:w-32  flex items-center justify-center text-2xl font-bold text-[#143B42] shrink-0 overflow-hidden shadow-2xs">
               {doctor.avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={doctor.avatarUrl}
                   alt={doctor.name}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover object-top"
+                  height={100}
+                  width={200}
                 />
               ) : (
                 doctor.name.slice(0, 2).toUpperCase()
               )}
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold text-slate-900">
-                  {doctor.name}
-                </h2>
-                <Badge
-                  variant={doctor.status === "Active" ? "success" : "secondary"}
-                >
-                  {doctor.status}
-                </Badge>
+
+            <div className="space-y-2.5">
+              <div>
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#143B42] tracking-tight">
+                    {doctor.name}
+                  </h2>
+                  <Badge
+                    variant={doctor.status === "Active" ? "success" : "destructive"}
+                  >
+                    {doctor.status}
+                  </Badge>
+                </div>
+                <p className="text-sm font-semibold text-[#3F97A5] mt-0.5">
+                  {doctor.specialization}
+                </p>
               </div>
-              <p className="text-xs font-medium text-[#3F97A5] mt-0.5">
-                {doctor.specialization}
-              </p>
-              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-2">
-                <span className="flex items-center gap-1.5">
-                  <Building2 className="h-3.5 w-3.5 text-slate-400" />
-                  {doctor.hospital}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs text-slate-600 pt-1">
+                <span className="flex items-center gap-2">
+                  <Building2 className="h-3.5 w-3.5 text-[#3F97A5] shrink-0" />
+                  <span className="truncate">{doctor.hospital}</span>
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <Phone className="h-3.5 w-3.5 text-slate-400" />
-                  {doctor.phone}
+                <span className="flex items-center gap-2">
+                  <Phone className="h-3.5 w-3.5 text-[#3F97A5] shrink-0" />
+                  <span>{doctor.phone}</span>
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5 text-slate-400" />
-                  {doctor.email}
+                <span className="flex items-center gap-2">
+                  <Mail className="h-3.5 w-3.5 text-[#3F97A5] shrink-0" />
+                  <span className="truncate">{doctor.email}</span>
                 </span>
                 {doctor.createdAt && (
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5 text-slate-400" />
-                    Joined: {new Date(doctor.createdAt).toLocaleDateString()}
+                  <span className="flex items-center gap-2">
+                    <Calendar className="h-3.5 w-3.5 text-[#3F97A5] shrink-0" />
+                    <span>
+                      Joined: {new Date(doctor.createdAt).toLocaleDateString()}
+                    </span>
                   </span>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-l border-slate-100 pt-3 sm:pt-0 sm:pl-6 shrink-0">
-            <span className="text-xs text-slate-400">Assigned Patients</span>
-            <div className="flex items-center gap-1.5 text-2xl font-bold text-[#3F97A5] mt-0.5">
-              <Users className="h-5 w-5" />
+          <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center rounded-md border border-[#DCEAEB] bg-[#F4FAFA] px-5 py-3.5 shrink-0">
+            <span className="text-lg font-medium text-slate-500">
+              Assigned Patients
+            </span>
+            <div className="flex items-center gap-2 text-2xl font-bold text-[#143B42] mt-1">
+              <Users className="h-5 w-5 text-[#3F97A5]" />
               <span>{patients.length}</span>
             </div>
           </div>
@@ -116,18 +127,18 @@ export function DoctorDetails({
       <div className="space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold text-slate-900">
+            <h3 className="text-xl font-medium text-slate-900">
               Assigned Patients for {doctor.name}
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-sm text-slate-500">
               Manage and track medical records assigned to this physician.
             </p>
           </div>
 
           <Button
-            size="sm"
+            size="lg"
             onClick={() => setIsAddPatientOpen(true)}
-            className="gap-1.5"
+            className="gap-1.5 rounded-xs"
           >
             <UserPlus className="h-4 w-4" />
             <span>Add patient to doctor</span>
