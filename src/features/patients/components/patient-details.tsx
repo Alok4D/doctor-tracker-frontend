@@ -219,19 +219,7 @@ export function PatientDetails({
               </div>
             </div>
 
-            {/* <div className="rounded-xl border border-[#DCEAEB] bg-[#F7FAFA] p-4 flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-[#EBF6F6] text-[#143B42] shrink-0">
-                <Shield className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="text-[11px] text-slate-500 font-medium">
-                  Coverage Plan
-                </p>
-                <p className="text-sm font-semibold text-[#143B42] mt-0.5">
-                  Care Guide Standard Medical
-                </p>
-              </div>
-            </div> */}
+          
           </div>
         </div>
 
