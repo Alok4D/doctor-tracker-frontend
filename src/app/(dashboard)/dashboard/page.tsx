@@ -57,7 +57,7 @@ export default function DashboardPage() {
         <StatsCard
           title="Total Doctors"
           value={stats?.totalDoctors ?? 0}
-          change={`${stats?.activeDoctors ?? 0} active physicians`}
+          change =  {"All active physicians"}
           icon={UserCheck}
           isLoading={statsLoading}
         />
