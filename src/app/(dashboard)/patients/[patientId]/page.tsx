@@ -1,21 +1,18 @@
 "use client";
 
 import { use } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import {
-  ArrowLeft,
-  User,
-  Phone,
-  Calendar,
-  HeartPulse,
-  UserCheck,
-  Shield,
-} from "lucide-react";
-import { useGetPatientByIdQuery } from "@/lib/feature/patient/patientApi";
+  useGetPatientByIdQuery,
+  useUpdatePatientMutation,
+  useDeletePatientMutation,
+} from "@/lib/feature/patient/patientApi";
+import { PatientDetails } from "@/features/patients/components/patient-details";
+import { PatientSubmitPayload } from "@/features/patients/components/patient-form";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function PatientDetailPage({
   params,
@@ -24,9 +21,33 @@ export default function PatientDetailPage({
 }) {
   const router = useRouter();
   const { patientId } = use(params);
+
   const { data, isLoading, error } = useGetPatientByIdQuery(patientId);
+  const [updatePatient] = useUpdatePatientMutation();
+  const [deletePatient, { isLoading: isDeleting }] = useDeletePatientMutation();
 
   const patient = data?.data;
+
+  const handleUpdate = async (formData: PatientSubmitPayload) => {
+    try {
+      await updatePatient({ id: patientId, body: formData }).unwrap();
+      toast.success("Patient record updated successfully");
+      return true;
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to update patient");
+      return false;
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deletePatient(patientId).unwrap();
+      toast.success("Patient record deleted");
+      router.push("/patients");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to delete patient");
+    }
+  };
 
   if (isLoading) {
     return <LoadingSpinner size="lg" />;
@@ -35,11 +56,17 @@ export default function PatientDetailPage({
   if (error || !patient) {
     return (
       <div className="flex flex-col items-center justify-center p-12 text-center">
-        <h2 className="text-base font-semibold text-slate-900">Patient not found</h2>
+        <h2 className="text-base font-semibold text-slate-900">
+          Patient not found
+        </h2>
         <p className="mt-1 text-xs text-slate-500 mb-4">
           The requested patient record could not be found.
         </p>
-        <Button size="sm" onClick={() => router.push("/patients")} className="gap-2">
+        <Button
+          size="sm"
+          onClick={() => router.push("/patients")}
+          className="gap-2 rounded-full"
+        >
           <ArrowLeft className="h-4 w-4" />
           <span>Back to patients list</span>
         </Button>
@@ -47,141 +74,12 @@ export default function PatientDetailPage({
     );
   }
 
-  const doctorName =
-    typeof patient.doctorId === "object" && patient.doctorId !== null
-      ? (patient.doctorId as any).name
-      : "Assigned Physician";
-
-  const doctorSpecialty =
-    typeof patient.doctorId === "object" && patient.doctorId !== null
-      ? (patient.doctorId as any).specialization
-      : "";
-
-  const doctorId =
-    typeof patient.doctorId === "object" && patient.doctorId !== null
-      ? (patient.doctorId as any)._id
-      : null;
-
   return (
-    <div className="space-y-6">
-      <Link
-        href="/patients"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-[#3F97A5] transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        <span>Back to patients list</span>
-      </Link>
-
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-5">
-          <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-full bg-[#EBF6F6] border border-[#CBE6E8] flex items-center justify-center text-base font-bold text-[#143B42] overflow-hidden shrink-0">
-              {patient.avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={patient.avatarUrl}
-                  alt={patient.name}
-                  className="h-full w-full object-cover object-top"
-                />
-              ) : (
-                patient.name.slice(0, 2).toUpperCase()
-              )}
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-slate-900">{patient.name}</h1>
-                <Badge variant="default">{patient.status}</Badge>
-              </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Patient ID: {patient._id.slice(-6)}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-[#EBF6F6] text-[#3F97A5]">
-              <User className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Demographics</p>
-              <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                {patient.age} years old, {patient.gender}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600">
-              <HeartPulse className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Medical Condition</p>
-              <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                {patient.condition}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
-              <UserCheck className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Assigned Physician</p>
-              {doctorId ? (
-                <Link
-                  href={`/doctors/${doctorId}`}
-                  className="text-sm font-semibold text-[#3F97A5] hover:underline mt-0.5 block"
-                >
-                  {doctorName} {doctorSpecialty && `(${doctorSpecialty})`}
-                </Link>
-              ) : (
-                <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                  {doctorName}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-slate-100 text-slate-600">
-              <Phone className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Phone</p>
-              <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                {patient.phone}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-amber-50 text-amber-600">
-              <Calendar className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Admission Date</p>
-              <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                {patient.admissionDate || (patient.createdAt ? new Date(patient.createdAt).toLocaleDateString() : "Recent")}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-violet-50 text-violet-600">
-              <Shield className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 font-medium">Coverage</p>
-              <p className="text-sm font-semibold text-slate-800 mt-0.5">
-                Care Guide Standard Medical Plan
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <PatientDetails
+      patient={patient}
+      onUpdate={handleUpdate}
+      onDelete={handleDelete}
+      isDeleting={isDeleting}
+    />
   );
 }
