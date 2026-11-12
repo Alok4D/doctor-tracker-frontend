@@ -14,6 +14,7 @@ import { PatientsPerDoctorChart } from "@/features/dashboard/components/patients
 import { useGetDashboardStatsQuery } from "@/lib/feature/dashboard/dashboardApi";
 
 export default function DashboardPage() {
+
   const [timeRange, setTimeRange] = useState("all");
 
   const { data: statsData, isLoading: isLoadingStats, isFetching: isFetchingStats } =
@@ -24,6 +25,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      
       {/* Dashboard Top Header & Date Range Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>

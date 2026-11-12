@@ -11,7 +11,7 @@ import { IPatient } from "@/types/patient.types";
 
 export const doctorApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // GET All Doctors with Filtering & Pagination
+  
     getDoctors: builder.query<ApiResponse<IDoctor[]>, IDoctorFilterParams | void>({
       query: (params) => {
         const queryParams = new URLSearchParams();
@@ -44,7 +44,7 @@ export const doctorApi = baseApi.injectEndpoints({
       providesTags: ["Doctor"],
     }),
 
-    // GET Single Doctor by ID (returns { doctor, patients, patientCount })
+    
     getDoctorById: builder.query<
       ApiResponse<{ doctor: IDoctor; patients: IPatient[]; patientCount: number }>,
       string
@@ -56,7 +56,7 @@ export const doctorApi = baseApi.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Doctor", id }, "Doctor", "Patient"],
     }),
 
-    // GET Doctor's Assigned Patients
+    
     getDoctorPatients: builder.query<ApiResponse<IPatient[]>, string>({
       query: (id) => ({
         url: `/doctors/${id}/patients`,
@@ -65,7 +65,7 @@ export const doctorApi = baseApi.injectEndpoints({
       providesTags: ["Doctor", "Patient"],
     }),
 
-    // POST Create Doctor (multipart/form-data with optional photo)
+   
     createDoctor: builder.mutation<ApiResponse<IDoctor>, ICreateDoctorPayload>({
       query: (payload) => ({
         url: "/doctors",
@@ -75,7 +75,7 @@ export const doctorApi = baseApi.injectEndpoints({
       invalidatesTags: ["Doctor", "Dashboard"],
     }),
 
-    // PATCH Update Doctor (multipart/form-data with optional photo)
+   
     updateDoctor: builder.mutation<
       ApiResponse<IDoctor>,
       { id: string; body: IUpdateDoctorPayload }
@@ -88,7 +88,7 @@ export const doctorApi = baseApi.injectEndpoints({
       invalidatesTags: (result, error, { id }) => [{ type: "Doctor", id }, "Doctor", "Dashboard"],
     }),
 
-    // DELETE Doctor
+   
     deleteDoctor: builder.mutation<ApiResponse<IDoctor>, string>({
       query: (id) => ({
         url: `/doctors/${id}`,
@@ -97,7 +97,7 @@ export const doctorApi = baseApi.injectEndpoints({
       invalidatesTags: ["Doctor", "Dashboard"],
     }),
 
-    // POST Assign Patient to Doctor
+   
     assignPatientToDoctor: builder.mutation<
       ApiResponse<any>,
       { doctorId: string; patientId: string }
@@ -110,7 +110,7 @@ export const doctorApi = baseApi.injectEndpoints({
       invalidatesTags: ["Doctor", "Patient", "Dashboard"],
     }),
 
-    // DELETE Remove Patient from Doctor
+   
     removePatientFromDoctor: builder.mutation<
       ApiResponse<any>,
       { doctorId: string; patientId: string }
