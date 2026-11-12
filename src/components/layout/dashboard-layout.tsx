@@ -8,6 +8,7 @@ import { useAppSelector } from "@/store/hooks";
 import { Loader } from "lucide-react";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
+
   const router = useRouter();
   const pathname = usePathname();
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
@@ -73,7 +74,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           toggleMobileSidebar={() => setIsMobileOpen(true)}
         />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
-          <div className="mx-auto max-w-7xl">{children}</div>
+          <div className="mx-auto max-w-full">{children}</div>
         </main>
       </div>
     </div>
