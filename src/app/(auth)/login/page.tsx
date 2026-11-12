@@ -6,7 +6,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen bg-white font-sans">
       {/* Left Side - Image / Banner matching previous layout with Teal/Mint palette */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#143B42]">
+        <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2400&auto=format&fit=crop"

@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { IDoctor } from "@/types/doctor.types";
 import { IPatient } from "@/types/patient.types";
-import { PatientFormData } from "@/features/patients/schemas/patient.schema";
+import { PatientSubmitPayload } from "@/features/patients/components/patient-form";
 import { PatientTable } from "@/features/patients/components/patient-table";
 import { PatientDialog } from "@/features/patients/components/patient-dialog";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ import { toast } from "sonner";
 interface DoctorDetailsProps {
   doctor: IDoctor;
   patients: IPatient[];
-  onAddPatient: (data: PatientFormData) => Promise<boolean | void>;
+  onAddPatient: (data: PatientSubmitPayload) => Promise<boolean | void>;
   onDeletePatient: (patientId: string) => void;
 }
 

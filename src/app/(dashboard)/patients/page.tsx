@@ -8,7 +8,7 @@ import { PatientSearch } from "@/features/patients/components/patient-search";
 import { PatientFilters } from "@/features/patients/components/patient-filters";
 import { PatientDialog } from "@/features/patients/components/patient-dialog";
 import { IPatient } from "@/types/patient.types";
-import { PatientFormData } from "@/features/patients/schemas/patient.schema";
+import { PatientSubmitPayload } from "@/features/patients/components/patient-form";
 import { PageHeader } from "@/components/shared/page-header";
 import { Pagination } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
@@ -51,7 +51,7 @@ export default function PatientsPage() {
     setIsDialogOpen(true);
   };
 
-  const handleSubmitPatient = async (data: PatientFormData) => {
+  const handleSubmitPatient = async (data: PatientSubmitPayload) => {
     if (editingPatient) {
       return await editPatient(editingPatient._id, data);
     } else {
@@ -113,6 +113,7 @@ export default function PatientsPage() {
       <PatientDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
+        initialAvatarUrl={editingPatient?.avatarUrl}
         initialData={
           editingPatient
             ? {

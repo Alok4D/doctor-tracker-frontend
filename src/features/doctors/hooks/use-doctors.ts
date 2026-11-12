@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DoctorFormData } from "../schemas/doctor.schema";
+import { DoctorSubmitPayload } from "../components/doctor-form";
 import {
   useGetDoctorsQuery,
   useCreateDoctorMutation,
@@ -64,7 +64,7 @@ export function useDoctors() {
   const total = meta?.total ?? doctors.length;
   const totalPages = meta?.totalPage ?? 1;
 
-  const addDoctor = async (formData: DoctorFormData) => {
+  const addDoctor = async (formData: DoctorSubmitPayload) => {
     try {
       await createDoctorMutation(formData).unwrap();
       toast.success("Doctor added successfully");

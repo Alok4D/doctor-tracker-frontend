@@ -41,6 +41,7 @@ export interface ICreatePatientPayload {
   status: PatientStatus;
   admissionDate?: string;
   avatarUrl?: string;
+  photo?: File | null;
 }
 
 export interface IUpdatePatientPayload extends Partial<ICreatePatientPayload> {}

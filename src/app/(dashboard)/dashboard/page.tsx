@@ -17,8 +17,8 @@ import { QuickActions } from "@/features/dashboard/components/quick-actions";
 import { PatientsPerDoctorChart } from "@/features/dashboard/components/patients-per-doctor-chart";
 import { DoctorDialog } from "@/features/doctors/components/doctor-dialog";
 import { PatientDialog } from "@/features/patients/components/patient-dialog";
-import { DoctorFormData } from "@/features/doctors/schemas/doctor.schema";
-import { PatientFormData } from "@/features/patients/schemas/patient.schema";
+import { DoctorSubmitPayload } from "@/features/doctors/components/doctor-form";
+import { PatientSubmitPayload } from "@/features/patients/components/patient-form";
 import { IPatient } from "@/types/patient.types";
 import {
   useGetDashboardStatsQuery,
@@ -72,7 +72,7 @@ export default function DashboardPage() {
     { v: 18 }, { v: 19 }, { v: 21 }, { v: 20 }, { v: 22 }, { v: 21 }, { v: 22 },
   ];
 
-  const handleCreateDoctor = async (data: DoctorFormData) => {
+  const handleCreateDoctor = async (data: DoctorSubmitPayload) => {
     try {
       await createDoctor(data).unwrap();
       toast.success("Doctor created successfully!");
@@ -91,7 +91,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleCreateOrUpdatePatient = async (data: PatientFormData) => {
+  const handleCreateOrUpdatePatient = async (data: PatientSubmitPayload) => {
     try {
       if (editingPatient) {
         await updatePatient({
@@ -248,6 +248,7 @@ export default function DashboardPage() {
           if (!open) setEditingPatient(null);
         }}
         onSubmit={handleCreateOrUpdatePatient}
+        initialAvatarUrl={editingPatient?.avatarUrl}
         initialData={
           editingPatient
             ? {

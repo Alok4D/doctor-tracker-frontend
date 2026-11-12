@@ -2,7 +2,7 @@
 
 import { use } from "react";
 import { useRouter } from "next/navigation";
-import { PatientFormData } from "@/features/patients/schemas/patient.schema";
+import { PatientSubmitPayload } from "@/features/patients/components/patient-form";
 import {
   useGetDoctorByIdQuery,
 } from "@/lib/feature/doctor/doctorApi";
@@ -31,7 +31,7 @@ export default function DoctorProfilePage({
   const doctor = data?.data?.doctor;
   const patients = data?.data?.patients || [];
 
-  const handleAddPatient = async (formData: PatientFormData) => {
+  const handleAddPatient = async (formData: PatientSubmitPayload) => {
     try {
       await createPatientMutation({
         ...formData,

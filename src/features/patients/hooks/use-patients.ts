@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PatientFormData } from "../schemas/patient.schema";
+import { PatientSubmitPayload } from "../components/patient-form";
 import {
   useGetPatientsQuery,
   useCreatePatientMutation,
@@ -73,7 +73,7 @@ export function usePatients(initialDoctorId?: string) {
   const total = meta?.total ?? patients.length;
   const totalPages = meta?.totalPage ?? 1;
 
-  const addPatient = async (formData: PatientFormData) => {
+  const addPatient = async (formData: PatientSubmitPayload) => {
     try {
       await createPatientMutation(formData).unwrap();
       toast.success("Patient registered successfully");
@@ -84,7 +84,7 @@ export function usePatients(initialDoctorId?: string) {
     }
   };
 
-  const editPatient = async (id: string, formData: Partial<PatientFormData>) => {
+  const editPatient = async (id: string, formData: Partial<PatientSubmitPayload>) => {
     try {
       await updatePatientMutation({
         id,

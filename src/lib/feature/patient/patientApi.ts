@@ -1,4 +1,5 @@
 import baseApi from "@/lib/api/baseApi";
+import { toFormData } from "@/lib/utils/form-data";
 import { ApiResponse } from "@/types/api.types";
 import {
   IPatient,
@@ -53,17 +54,17 @@ export const patientApi = baseApi.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Patient", id }, "Patient"],
     }),
 
-    // POST Create Patient
+    // POST Create Patient (multipart/form-data with optional photo)
     createPatient: builder.mutation<ApiResponse<IPatient>, ICreatePatientPayload>({
       query: (payload) => ({
         url: "/patients",
         method: "POST",
-        body: payload,
+        body: toFormData(payload),
       }),
       invalidatesTags: ["Patient", "Doctor", "Dashboard"],
     }),
 
-    // PATCH Update Patient
+    // PATCH Update Patient (multipart/form-data with optional photo)
     updatePatient: builder.mutation<
       ApiResponse<IPatient>,
       { id: string; body: IUpdatePatientPayload }
@@ -71,7 +72,7 @@ export const patientApi = baseApi.injectEndpoints({
       query: ({ id, body }) => ({
         url: `/patients/${id}`,
         method: "PATCH",
-        body,
+        body: toFormData(body),
       }),
       invalidatesTags: (result, error, { id }) => [
         { type: "Patient", id },

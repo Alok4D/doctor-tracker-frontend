@@ -1,30 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { doctorFormSchema, DoctorFormData } from "../schemas/doctor.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { PhotoUpload } from "@/components/shared/photo-upload";
 import { DOCTOR_SPECIALIZATIONS } from "@/lib/constants";
+
+export type DoctorSubmitPayload = DoctorFormData & { photo?: File | null };
 
 interface DoctorFormProps {
   initialData?: Partial<DoctorFormData>;
-  onSubmit: (data: DoctorFormData) => Promise<boolean | void>;
+  initialAvatarUrl?: string;
+  onSubmit: (data: DoctorSubmitPayload) => Promise<boolean | void>;
   onCancel: () => void;
   isLoading?: boolean;
 }
 
 export function DoctorForm({
   initialData,
+  initialAvatarUrl,
   onSubmit,
   onCancel,
   isLoading = false,
 }: DoctorFormProps) {
+  const [photo, setPhoto] = useState<File | null>(null);
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<DoctorFormData>({
     resolver: zodResolver(doctorFormSchema),
     defaultValues: {
@@ -37,8 +45,24 @@ export function DoctorForm({
     },
   });
 
+  const busy = isLoading || isSubmitting;
+
+  const handleFormSubmit = async (data: DoctorFormData) => {
+    await onSubmit({
+      ...data,
+      photo,
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+      <PhotoUpload
+        initialUrl={initialAvatarUrl}
+        value={photo}
+        onChange={setPhoto}
+        label="Doctor photo (Optional)"
+      />
+
       <div>
         <label className="block text-xs font-medium text-slate-700 mb-1">
           Doctor name
@@ -127,15 +151,14 @@ export function DoctorForm({
           variant="outline"
           size="sm"
           onClick={onCancel}
-          disabled={isLoading}
+          disabled={busy}
         >
           Cancel
         </Button>
-        <Button type="submit" size="sm" disabled={isLoading}>
-          {isLoading ? "Saving..." : "Save doctor"}
+        <Button type="submit" size="sm" disabled={busy}>
+          {busy ? "Saving..." : "Save doctor"}
         </Button>
       </div>
     </form>
   );
 }
-

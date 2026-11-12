@@ -1,29 +1,36 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { patientFormSchema, PatientFormData } from "../schemas/patient.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { PhotoUpload } from "@/components/shared/photo-upload";
 import { PATIENT_CONDITIONS, GENDERS } from "@/lib/constants";
 import { useGetDoctorsQuery } from "@/lib/feature/doctor/doctorApi";
 
+export type PatientSubmitPayload = PatientFormData & { photo?: File | null };
+
 interface PatientFormProps {
   initialData?: Partial<PatientFormData>;
+  initialAvatarUrl?: string;
   lockedDoctorId?: string;
-  onSubmit: (data: PatientFormData) => Promise<boolean | void>;
+  onSubmit: (data: PatientSubmitPayload) => Promise<boolean | void>;
   onCancel: () => void;
   isLoading?: boolean;
 }
 
 export function PatientForm({
   initialData,
+  initialAvatarUrl,
   lockedDoctorId,
   onSubmit,
   onCancel,
   isLoading = false,
 }: PatientFormProps) {
+  const [photo, setPhoto] = useState<File | null>(null);
   const { data: doctorsData } = useGetDoctorsQuery({ limit: 100 });
   const doctorsList = doctorsData?.data || [];
 
@@ -35,7 +42,9 @@ export function PatientForm({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setValue,
+    watch,
+    formState: { errors, isSubmitting },
   } = useForm<PatientFormData>({
     resolver: zodResolver(patientFormSchema),
     defaultValues: {
@@ -49,8 +58,32 @@ export function PatientForm({
     },
   });
 
+  const currentDoctorId = watch("doctorId");
+
+  useEffect(() => {
+    if (!currentDoctorId && !lockedDoctorId && !initialData?.doctorId && doctorsList.length > 0) {
+      setValue("doctorId", doctorsList[0]._id);
+    }
+  }, [currentDoctorId, lockedDoctorId, initialData?.doctorId, doctorsList, setValue]);
+
+  const busy = isLoading || isSubmitting;
+
+  const handleFormSubmit = async (data: PatientFormData) => {
+    await onSubmit({
+      ...data,
+      photo,
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+      <PhotoUpload
+        initialUrl={initialAvatarUrl}
+        value={photo}
+        onChange={setPhoto}
+        label="Patient photo (Optional)"
+      />
+
       <div>
         <label className="block text-xs font-medium text-slate-700 mb-1">
           Patient full name
@@ -154,12 +187,12 @@ export function PatientForm({
           variant="outline"
           size="sm"
           onClick={onCancel}
-          disabled={isLoading}
+          disabled={busy}
         >
           Cancel
         </Button>
-        <Button type="submit" size="sm" disabled={isLoading}>
-          {isLoading ? "Saving..." : "Save patient record"}
+        <Button type="submit" size="sm" disabled={busy}>
+          {busy ? "Saving..." : "Save patient record"}
         </Button>
       </div>
     </form>

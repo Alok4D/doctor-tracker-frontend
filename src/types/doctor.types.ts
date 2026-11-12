@@ -33,6 +33,7 @@ export interface ICreateDoctorPayload {
   email: string;
   status?: "Active" | "Inactive";
   avatarUrl?: string;
+  photo?: File | null;
 }
 
 export interface IUpdateDoctorPayload extends Partial<ICreateDoctorPayload> {}
