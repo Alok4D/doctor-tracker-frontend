@@ -8,7 +8,6 @@ import { useAppSelector } from "@/store/hooks";
 import { Loader } from "lucide-react";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
-
   const router = useRouter();
   const pathname = usePathname();
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
@@ -52,16 +51,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!isMounted || !isAuthenticated || !token) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-[#F7F9FA]">
-        <Loader className="h-7 w-7 animate-spin text-[#3F97A5]" />
-      </div>
-    );
-  }
+  const isRedirectingUnauthenticated = isMounted && (!isAuthenticated || !token);
 
   return (
-    <div className="flex h-screen bg-[#F7F9FA] overflow-hidden font-sans text-slate-800">
+    <div className="flex h-screen bg-[#F7F9FA] overflow-hidden font-sans text-slate-800 relative">
       <Sidebar
         isCollapsed={isSidebarCollapsed}
         isMobileOpen={isMobileOpen}
@@ -74,9 +67,16 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           toggleMobileSidebar={() => setIsMobileOpen(true)}
         />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
-          <div className="mx-auto max-w-full">{children}</div>
+          <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>
+
+      {/* Overlay during unauthenticated redirect without dropping {children} */}
+      {isRedirectingUnauthenticated && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#F7F9FA]">
+          <Loader className="h-7 w-7 animate-spin text-[#3F97A5]" />
+        </div>
+      )}
     </div>
   );
 }
