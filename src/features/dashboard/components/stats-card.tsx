@@ -15,28 +15,28 @@ interface SparklineStatsCardProps {
 
 const themeStyles = {
   blue: {
-    bg: "bg-blue-50/40 border-blue-100",
-    iconBg: "bg-blue-100 text-blue-600",
-    stroke: "#3b82f6",
-    fill: "#93c5fd",
+    bg: "bg-[#F4FAFA] border-[#D6EAEB]",
+    iconBg: "bg-[#143B42] text-white",
+    stroke: "#3F97A5",
+    fill: "#8DC9D1",
   },
   emerald: {
-    bg: "bg-emerald-50/40 border-emerald-100",
-    iconBg: "bg-emerald-100 text-emerald-600",
+    bg: "bg-[#F2FAF7] border-[#D0ECE2]",
+    iconBg: "bg-[#3F97A5] text-white",
     stroke: "#10b981",
     fill: "#a7f3d0",
   },
   purple: {
-    bg: "bg-purple-50/40 border-purple-100",
-    iconBg: "bg-purple-100 text-purple-600",
-    stroke: "#8b5cf6",
-    fill: "#ddd6fe",
+    bg: "bg-[#F4F8F9] border-[#D7E4E6]",
+    iconBg: "bg-[#1E4D56] text-white",
+    stroke: "#143B42",
+    fill: "#9AC2C8",
   },
   orange: {
-    bg: "bg-orange-50/40 border-orange-100",
-    iconBg: "bg-orange-100 text-orange-600",
-    stroke: "#f97316",
-    fill: "#fed7aa",
+    bg: "bg-[#F5FAFA] border-[#D5EBEC]",
+    iconBg: "bg-[#2C7B88] text-white",
+    stroke: "#2C7B88",
+    fill: "#9FD6DF",
   },
 };
 
@@ -72,10 +72,10 @@ export function StatsCard({
         <div>
           <p className="text-xs font-medium text-slate-500">{title}</p>
           <div className="flex items-baseline gap-2 mt-0.5">
-            <span className="text-2xl font-bold tracking-tight text-slate-900">
+            <span className="text-2xl font-bold tracking-tight text-[#143B42]">
               {value}
             </span>
-            <span className="text-xs font-semibold text-emerald-600">
+            <span className="text-xs font-semibold text-[#3F97A5]">
               {change}
             </span>
           </div>

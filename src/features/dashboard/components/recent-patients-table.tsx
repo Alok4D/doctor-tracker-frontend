@@ -20,7 +20,7 @@ export function RecentPatientsTable({
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Admitted":
-        return "text-blue-600 bg-blue-600";
+        return "text-[#3F97A5] bg-[#3F97A5]";
       case "Discharged":
         return "text-slate-500 bg-slate-400";
       case "Followup":
@@ -33,12 +33,12 @@ export function RecentPatientsTable({
   };
 
   return (
-    <div className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs">
+    <div className="rounded-xl border border-[#E5ECEE] bg-white p-5 shadow-xs">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-        <h3 className="text-sm font-bold text-slate-900">New Patients</h3>
+        <h3 className="text-sm font-bold text-[#143B42]">New Patients</h3>
         <Link
           href="/patients"
-          className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group"
+          className="text-xs font-semibold text-[#3F97A5] hover:text-[#143B42] flex items-center gap-1 group"
         >
           <span>View all</span>
           <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
@@ -82,7 +82,7 @@ export function RecentPatientsTable({
                       </div>
                       <Link
                         href={`/patients/${patId}`}
-                        className="font-medium text-slate-800 hover:text-blue-600 transition-colors"
+                        className="font-medium text-slate-800 hover:text-[#3F97A5] transition-colors"
                       >
                         {patient.name}
                       </Link>
@@ -103,7 +103,7 @@ export function RecentPatientsTable({
                     <div className="flex items-center justify-end gap-1">
                       <Link
                         href={`/patients/${patId}`}
-                        className="p-1 rounded text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                        className="p-1 rounded text-slate-400 hover:text-[#3F97A5] hover:bg-[#EBF6F6] transition-colors"
                         title="View Details"
                       >
                         <Eye className="h-3.5 w-3.5" />

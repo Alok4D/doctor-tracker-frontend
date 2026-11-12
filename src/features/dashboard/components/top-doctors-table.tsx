@@ -17,12 +17,12 @@ export function TopDoctorsTable({
   onDeleteDoctor,
 }: TopDoctorsTableProps) {
   return (
-    <div className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs">
+    <div className="rounded-xl border border-[#E5ECEE] bg-white p-5 shadow-xs">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-        <h3 className="text-sm font-bold text-slate-900">Top Doctors</h3>
+        <h3 className="text-sm font-bold text-[#143B42]">Top Doctors</h3>
         <Link
           href="/doctors"
-          className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group"
+          className="text-xs font-semibold text-[#3F97A5] hover:text-[#143B42] flex items-center gap-1 group"
         >
           <span>View all</span>
           <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
@@ -49,7 +49,7 @@ export function TopDoctorsTable({
                 >
                   <td className="py-2.5">
                     <div className="flex items-center gap-2.5">
-                      <div className="h-7 w-7 rounded-full bg-blue-100 text-blue-700 font-semibold flex items-center justify-center text-[10px] shrink-0 overflow-hidden">
+                      <div className="h-7 w-7 rounded-full bg-[#EBF6F6] text-[#143B42] font-semibold flex items-center justify-center text-[10px] shrink-0 overflow-hidden">
                         {doctor.avatarUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
@@ -63,7 +63,7 @@ export function TopDoctorsTable({
                       </div>
                       <Link
                         href={`/doctors/${docId}`}
-                        className="font-medium text-slate-800 hover:text-blue-600 transition-colors"
+                        className="font-medium text-slate-800 hover:text-[#3F97A5] transition-colors"
                       >
                         {doctor.name}
                       </Link>
@@ -77,14 +77,14 @@ export function TopDoctorsTable({
                       <span
                         className={`h-1.5 w-1.5 rounded-full ${
                           doctor.status === "Active"
-                            ? "bg-blue-600"
+                            ? "bg-[#3F97A5]"
                             : "bg-slate-400"
                         }`}
                       />
                       <span
                         className={`font-medium ${
                           doctor.status === "Active"
-                            ? "text-blue-600"
+                            ? "text-[#3F97A5]"
                             : "text-slate-500"
                         }`}
                       >
@@ -96,7 +96,7 @@ export function TopDoctorsTable({
                     <div className="flex items-center justify-end gap-1">
                       <Link
                         href={`/doctors/${docId}`}
-                        className="p-1 rounded text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                        className="p-1 rounded text-slate-400 hover:text-[#3F97A5] hover:bg-[#EBF6F6] transition-colors"
                         title="View Doctor Profile"
                       >
                         <Eye className="h-3.5 w-3.5" />

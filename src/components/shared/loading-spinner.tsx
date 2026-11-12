@@ -17,7 +17,7 @@ export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) 
     <div className="flex items-center justify-center p-6">
       <Loader2
         className={cn(
-          "animate-spin text-blue-600",
+          "animate-spin text-[#3F97A5]",
           sizeMap[size],
           className
         )}

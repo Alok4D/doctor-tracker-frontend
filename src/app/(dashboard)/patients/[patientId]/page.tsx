@@ -66,7 +66,7 @@ export default function PatientDetailPage({
     <div className="space-y-6">
       <Link
         href="/patients"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-[#3F97A5] transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
         <span>Back to patients list</span>
@@ -92,7 +92,7 @@ export default function PatientDetailPage({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+            <div className="p-2 rounded-lg bg-[#EBF6F6] text-[#3F97A5]">
               <User className="h-5 w-5" />
             </div>
             <div>
@@ -124,7 +124,7 @@ export default function PatientDetailPage({
               {doctorId ? (
                 <Link
                   href={`/doctors/${doctorId}`}
-                  className="text-sm font-semibold text-blue-600 hover:underline mt-0.5 block"
+                  className="text-sm font-semibold text-[#3F97A5] hover:underline mt-0.5 block"
                 >
                   {doctorName} {doctorSpecialty && `(${doctorSpecialty})`}
                 </Link>

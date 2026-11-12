@@ -71,7 +71,7 @@ export function DoctorTable({
                 {/* Doctor Avatar + Name */}
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-full bg-blue-50 border border-blue-200/60 flex items-center justify-center text-xs font-semibold text-blue-700 shrink-0 overflow-hidden">
+                    <div className="h-9 w-9 rounded-full bg-[#EBF6F6] border border-[#CBE6E8] flex items-center justify-center text-xs font-semibold text-[#143B42] shrink-0 overflow-hidden">
                       {doctor.avatarUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -86,7 +86,7 @@ export function DoctorTable({
                     <div className="flex flex-col">
                       <Link
                         href={`/doctors/${id}`}
-                        className="font-medium text-slate-900 hover:text-blue-600 transition-colors flex items-center gap-1 group"
+                        className="font-medium text-slate-900 hover:text-[#3F97A5] transition-colors flex items-center gap-1 group"
                       >
                         <span>{doctor.name}</span>
                         <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -128,7 +128,7 @@ export function DoctorTable({
                 <TableCell>
                   <Link
                     href={`/doctors/${id}`}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50/70 border border-blue-100 text-xs font-semibold text-blue-700 hover:bg-blue-100 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF6F6] border border-[#CBE6E8] text-xs font-semibold text-[#143B42] hover:bg-[#DDF0F0] transition-colors"
                   >
                     <Users className="h-3.5 w-3.5" />
                     <span>{doctor.patientCount ?? 0} patients</span>
@@ -156,7 +156,7 @@ export function DoctorTable({
                   <div className="flex items-center justify-end gap-1">
                     <Link
                       href={`/doctors/${id}`}
-                      className="p-1.5 rounded-md text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                      className="p-1.5 rounded-md text-slate-400 hover:text-[#3F97A5] hover:bg-[#EBF6F6] transition-colors"
                       title="View Details"
                     >
                       <ExternalLink className="h-4 w-4" />

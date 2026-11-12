@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import StoreProvider from "@/store/provider";
 
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
+const inter = Inter({
+  weight: ["300", "400", "500", "600", "700", "800"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-roboto",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={roboto.variable}>
-      <body className="font-roboto antialiased bg-slate-50 text-slate-800">
+    <html lang="en" className={inter.variable}>
+      <body className="font-sans antialiased bg-[#F7F9FA] text-[#111827]">
         <StoreProvider>
           {children}
           <Toaster richColors position="top-right" />

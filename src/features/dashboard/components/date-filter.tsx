@@ -29,7 +29,7 @@ export function DashboardHeaderControls({
         variant="default"
         size="sm"
         onClick={onExport}
-        className="gap-1.5 text-xs bg-blue-600 hover:bg-blue-700"
+        className="gap-1.5 text-xs bg-[#3F97A5] hover:bg-[#35818D]"
       >
         <Download className="h-3.5 w-3.5" />
         <span>Export</span>

@@ -42,7 +42,7 @@ export function DoctorDetails({
       <div className="flex items-center justify-between">
         <Link
           href="/doctors"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-[#3F97A5] transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Back to all doctors</span>
@@ -53,7 +53,7 @@ export function DoctorDetails({
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-blue-100 border-2 border-blue-200 flex items-center justify-center text-lg font-bold text-blue-700 shrink-0 overflow-hidden">
+            <div className="h-16 w-16 rounded-full bg-[#EBF6F6] border-2 border-[#CBE6E8] flex items-center justify-center text-lg font-bold text-[#143B42] shrink-0 overflow-hidden">
               {doctor.avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -76,7 +76,7 @@ export function DoctorDetails({
                   {doctor.status}
                 </Badge>
               </div>
-              <p className="text-xs font-medium text-blue-600 mt-0.5">
+              <p className="text-xs font-medium text-[#3F97A5] mt-0.5">
                 {doctor.specialization}
               </p>
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-2">
@@ -104,7 +104,7 @@ export function DoctorDetails({
 
           <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 sm:border-l border-slate-100 pt-3 sm:pt-0 sm:pl-6 shrink-0">
             <span className="text-xs text-slate-400">Assigned Patients</span>
-            <div className="flex items-center gap-1.5 text-2xl font-bold text-blue-600 mt-0.5">
+            <div className="flex items-center gap-1.5 text-2xl font-bold text-[#3F97A5] mt-0.5">
               <Users className="h-5 w-5" />
               <span>{patients.length}</span>
             </div>

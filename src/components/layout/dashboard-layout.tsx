@@ -54,14 +54,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   if (!isMounted || !isAuthenticated || !token) {
     return (
-      <div className="flex h-screen items-center justify-center bg-slate-50">
-        <Loader className="h-7 w-7 animate-spin text-blue-600" />
+      <div className="flex h-screen items-center justify-center bg-[#F7F9FA]">
+        <Loader className="h-7 w-7 animate-spin text-[#3F97A5]" />
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-roboto text-slate-800">
+    <div className="flex h-screen bg-[#F7F9FA] overflow-hidden font-sans text-slate-800">
       <Sidebar
         isCollapsed={isSidebarCollapsed}
         isMobileOpen={isMobileOpen}

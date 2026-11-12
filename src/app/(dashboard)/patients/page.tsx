@@ -68,7 +68,7 @@ export default function PatientsPage() {
         <Button
           size="sm"
           onClick={handleOpenAdd}
-          className="gap-1.5 bg-blue-600 hover:bg-blue-700"
+          className="gap-1.5 rounded-full bg-[#3F97A5] hover:bg-[#35818D]"
         >
           <UserPlus className="h-4 w-4" />
           <span>Register patient</span>

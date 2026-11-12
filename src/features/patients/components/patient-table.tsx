@@ -111,7 +111,7 @@ export function PatientTable({
                     <div className="flex flex-col">
                       <Link
                         href={`/patients/${id}`}
-                        className="font-medium text-slate-900 hover:text-blue-600 transition-colors flex items-center gap-1 group"
+                        className="font-medium text-slate-900 hover:text-[#3F97A5] transition-colors flex items-center gap-1 group"
                       >
                         <span>{patient.name}</span>
                         <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -140,7 +140,7 @@ export function PatientTable({
                 {/* Assigned Doctor */}
                 {showDoctorColumn && (
                   <TableCell>
-                    <span className="inline-flex items-center rounded-md px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200/50">
+                    <span className="inline-flex items-center rounded-full px-2.5 py-0.5 bg-[#EBF6F6] text-[#143B42] text-xs font-medium border border-[#CBE6E8]">
                       {doctorName}
                     </span>
                   </TableCell>
@@ -175,7 +175,7 @@ export function PatientTable({
                   <div className="flex items-center justify-end gap-1">
                     <Link
                       href={`/patients/${id}`}
-                      className="rounded-md p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                      className="rounded-md p-1.5 text-slate-400 hover:text-[#3F97A5] hover:bg-[#EBF6F6] transition-colors"
                       title="View details"
                     >
                       <ExternalLink className="h-4 w-4" />
@@ -184,7 +184,7 @@ export function PatientTable({
                       <button
                         type="button"
                         onClick={() => onEdit(patient)}
-                        className="rounded-md p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer"
+                        className="rounded-md p-1.5 text-slate-400 hover:text-[#3F97A5] hover:bg-[#EBF6F6] transition-colors cursor-pointer"
                         title="Edit patient"
                       >
                         <Edit2 className="h-4 w-4" />

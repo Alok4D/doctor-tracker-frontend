@@ -24,31 +24,31 @@ export function PatientsOverviewChart() {
   const chartData = data?.data?.weeklyOverview || defaultWeeklyData;
 
   return (
-    <div className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs flex flex-col justify-between h-full">
+    <div className="rounded-xl border border-[#E5ECEE] bg-white p-5 shadow-xs flex flex-col justify-between h-full">
       {/* Header matching design */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#EBF6F6] text-[#3F97A5]">
             <BarChart3 className="h-4 w-4" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900">Patients Overview</h3>
+          <h3 className="text-sm font-bold text-[#143B42]">Patients Overview</h3>
         </div>
 
         <div className="flex items-center gap-4">
           {/* Legend */}
           <div className="flex items-center gap-3 text-xs text-slate-600">
             <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-blue-600" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#3F97A5]" />
               <span>New Patients</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#143B42]" />
               <span>Returning Patients</span>
             </div>
           </div>
 
           {/* Timeframe dropdown */}
-          <select className="h-8 rounded-lg border border-slate-200 bg-slate-50/60 px-2.5 text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-600">
+          <select className="h-8 rounded-full border border-[#DCEAEB] bg-[#F4FAFA] px-3 text-xs text-[#143B42] focus:outline-none focus:ring-1 focus:ring-[#3F97A5]">
             <option>This Month</option>
             <option>Last Month</option>
             <option>This Quarter</option>
@@ -60,7 +60,7 @@ export function PatientsOverviewChart() {
       <div className="h-64 w-full pt-4 relative">
         {isLoading && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60">
-            <Loader className="h-6 w-6 animate-spin text-blue-600" />
+            <Loader className="h-6 w-6 animate-spin text-[#3F97A5]" />
           </div>
         )}
         <ResponsiveContainer width="100%" height="100%">
@@ -70,12 +70,12 @@ export function PatientsOverviewChart() {
           >
             <defs>
               <linearGradient id="colorNew" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.25} />
-                <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#3F97A5" stopOpacity={0.28} />
+                <stop offset="95%" stopColor="#3F97A5" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="colorReturning" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#143B42" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#143B42" stopOpacity={0.0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -106,22 +106,22 @@ export function PatientsOverviewChart() {
               type="monotone"
               dataKey="newPatients"
               name="New Patients"
-              stroke="#2563eb"
+              stroke="#3F97A5"
               strokeWidth={2.5}
               fillOpacity={1}
               fill="url(#colorNew)"
-              dot={{ r: 3.5, fill: "#2563eb", strokeWidth: 0 }}
+              dot={{ r: 3.5, fill: "#3F97A5", strokeWidth: 0 }}
               activeDot={{ r: 5 }}
             />
             <Area
               type="monotone"
               dataKey="returningPatients"
               name="Returning Patients"
-              stroke="#10b981"
+              stroke="#143B42"
               strokeWidth={2.5}
               fillOpacity={1}
               fill="url(#colorReturning)"
-              dot={{ r: 3.5, fill: "#10b981", strokeWidth: 0 }}
+              dot={{ r: 3.5, fill: "#143B42", strokeWidth: 0 }}
               activeDot={{ r: 5 }}
             />
           </AreaChart>
