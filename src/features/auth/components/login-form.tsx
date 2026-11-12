@@ -56,14 +56,13 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md space-y-6 font-sans">
+    <div className="w-full max-w-md space-y-6">
       <div className="text-center sm:text-left">
-        <h2 className="text-3xl font-bold text-[#143B42] tracking-tight">
+        <h2 className="text-3xl font-bold text-center text-[#143B42] tracking-tight">
           Log In to Your Account
         </h2>
-        <p className="text-slate-500 text-sm mt-1.5">
-          Welcome back! Please enter your details.
-        </p>
+    
+
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -113,7 +112,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-xs text-sm font-semibold text-white bg-[#3F97A5] hover:bg-[#35818D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3F97A5] disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-xs text-sm font-semibold text-white bg-[#3F97A5] hover:bg-[#35818D] cursor-pointer"
         >
           {isLoading ? (
             <>

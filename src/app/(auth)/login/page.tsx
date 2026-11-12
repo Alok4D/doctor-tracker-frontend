@@ -19,7 +19,7 @@ export default function LoginPage() {
       {/* Right Side - Form */}
       <div className="flex w-full lg:w-1/2 items-center justify-center p-6 sm:p-12 lg:p-20 bg-[#F7F9FA]">
         <div className="w-full max-w-md space-y-6">
-          <div className="flex justify-center lg:hidden">
+          <div className="flex justify-center">
             <BrandLogo
               iconClassName="h-9 w-9"
               textClassName="text-xl font-bold text-[#1F4B53]"
