@@ -95,13 +95,12 @@ export function Header({
             textClassName="text-base font-bold text-[#1F4B53]"
           />
         </div>
-        <span className="hidden md:inline text-sm font-medium text-[#143B42]">
+        <span className="hidden md:inline text-md font-medium text-[#143B42]">
           Welcome to Doctor Tracker
         </span>
       </div>
 
       <div className="flex items-center space-x-4">
-        {/* Notifications Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setShowNotifications(!showNotifications)}
@@ -118,55 +117,8 @@ export function Header({
             )}
           </button>
 
-          {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-md border border-[#E5ECEE] overflow-hidden z-50">
-              <div className="p-3.5 border-b border-slate-100 flex justify-between items-center bg-[#F7FAFA]">
-                <h3 className="text-xs font-semibold text-[#143B42] flex items-center">
-                  <BellRing className="w-3.5 h-3.5 mr-1.5 text-[#3F97A5]" />
-                  Notifications
-                </h3>
-                {unreadCount > 0 && (
-                  <button
-                    onClick={markAllAsRead}
-                    className="text-[11px] text-[#3F97A5] hover:text-[#143B42] font-medium flex items-center"
-                  >
-                    <Check className="w-3 h-3 mr-1" />
-                    Mark all read
-                  </button>
-                )}
-              </div>
-
-              <div className="max-h-72 overflow-y-auto divide-y divide-slate-100">
-                {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-slate-400 text-xs">
-                    No notifications yet.
-                  </div>
-                ) : (
-                  notifications.map((notif) => (
-                    <div
-                      key={notif.id}
-                      className={`p-3 transition-colors ${
-                        notif.read ? "bg-white opacity-75" : "bg-[#EBF6F6]/40"
-                      }`}
-                    >
-                      <p
-                        className={`text-xs ${
-                          notif.read
-                            ? "text-slate-600"
-                            : "text-slate-900 font-medium"
-                        }`}
-                      >
-                        {notif.message}
-                      </p>
-                      <p className="text-[10px] text-slate-400 mt-1">
-                        {notif.time}
-                      </p>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
+        
+       
         </div>
 
         {/* Divider */}

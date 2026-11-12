@@ -5,7 +5,28 @@
 ## 🔗 Live Links
 - **Live Frontend**: https://doctor-tracker-zone.vercel.app
 
-![Doctor Tracker Dashboard](public/dashboard-demo-images/dashboard-preview.png)
+## 📸 Visual Evidence (Desktop & Mobile Views)
+
+<table>
+  <tr>
+    <th align="center">Desktop — Admin Dashboard</th>
+    <th align="center">Mobile — Responsive Dashboard</th>
+  </tr>
+  <tr>
+    <td align="center" width="68%">
+      <img src="public/dashboard-demo-images/dashboard-preview.png" alt="Doctor Tracker Desktop Dashboard" width="100%" />
+    </td>
+    <td align="center" width="32%">
+      <img src="public/dashboard-demo-images/mobile-preview.png" alt="Doctor Tracker Mobile View" width="220" />
+    </td>
+  </tr>
+</table>
+
+<details>
+<summary><strong>Desktop — Login View</strong></summary>
+<br />
+<img src="public/dashboard-demo-images/login-preview.jpg" alt="Doctor Tracker Login Page" width="100%" />
+</details>
 
 
 ## ✨ Features Implemented
