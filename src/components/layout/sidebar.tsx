@@ -12,6 +12,7 @@ import { useLogoutMutation } from "@/lib/feature/auth/authApi";
 import baseApi from "@/lib/api/baseApi";
 import { BrandLogo } from "@/components/shared/brand-logo";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -99,7 +100,7 @@ export function Sidebar({
                 href={item.href}
                 title={!isMobileOpen && isCollapsed ? item.title : undefined}
                 className={cn(
-                  "flex items-center rounded-full transition-all group",
+                  "flex items-center rounded-md transition-all group",
                   !isMobileOpen && isCollapsed
                     ? "justify-center p-3"
                     : "justify-between px-4 py-2.5",
@@ -135,11 +136,12 @@ export function Sidebar({
             )}
           >
             <div className="w-9 h-9 rounded-full border border-[#CBE6E8] flex items-center justify-center shrink-0 overflow-hidden bg-[#EBF6F6]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={DEFAULT_AVATAR_URL}
                 alt="Profile"
                 className="w-full h-full object-cover"
+                width={36}
+                height={36}
               />
             </div>
             {(!isCollapsed || isMobileOpen) && (
@@ -159,7 +161,7 @@ export function Sidebar({
             disabled={isLoggingOut}
             title={!isMobileOpen && isCollapsed ? "Log out" : undefined}
             className={cn(
-              "flex items-center text-[#143B42] rounded-full border border-[#DCEAEB] bg-[#F3F8F9] hover:bg-[#EBF6F6] hover:border-[#3F97A5]/50 transition-all w-full shadow-2xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed",
+              "flex items-center text-[#143B42] rounded-md border-[0.5px] border-[#DCEAEB] bg-[#F3F8F9] hover:bg-[#EBF6F6] hover:border-[#3F97A5]/50 transition-all w-full disabled:opacity-60 disabled:cursor-not-allowed",
               !isMobileOpen && isCollapsed
                 ? "justify-center p-2.5 h-10"
                 : "justify-center px-4 py-2.5 h-10 text-sm font-medium"
