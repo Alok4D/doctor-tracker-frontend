@@ -14,6 +14,7 @@ import { useGetPatientsPerDoctorQuery } from "@/lib/feature/dashboard/dashboardA
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function PatientsPerDoctorChart() {
+  
   const { data, isLoading } = useGetPatientsPerDoctorQuery();
 
   const chartData = (data?.data || []).slice(0, 6).map((item) => ({

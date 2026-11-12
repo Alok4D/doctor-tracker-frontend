@@ -167,7 +167,7 @@ export default function DashboardPage() {
       {/* Row 2: Charts Area */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div className="lg:col-span-7">
-          <PatientsOverviewChart />
+          <PatientsPerDoctorChart />
         </div>
         <div className="lg:col-span-5">
           <DoctorsBySpecialtyChart />
@@ -192,7 +192,7 @@ export default function DashboardPage() {
       {/* Row 4: Patients per Doctor Chart & Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div className="lg:col-span-7">
-          <PatientsPerDoctorChart />
+          <PatientsOverviewChart />
         </div>
         <div className="lg:col-span-5">
           <QuickActions
