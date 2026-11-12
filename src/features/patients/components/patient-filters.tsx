@@ -35,11 +35,11 @@ export function PatientFilters({
   const doctorsList = doctorsData?.data || [];
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
       <Select
         value={condition}
         onChange={(e) => onConditionChange(e.target.value)}
-        className="w-40 text-xs bg-white"
+        className="flex-1 min-w-[130px] sm:w-40 text-xs bg-white"
       >
         <option value="all">All conditions</option>
         {PATIENT_CONDITIONS.map((cond) => (
@@ -52,7 +52,7 @@ export function PatientFilters({
       <Select
         value={doctorId}
         onChange={(e) => onDoctorIdChange(e.target.value)}
-        className="w-44 text-xs bg-white"
+        className="flex-1 min-w-[130px] sm:w-44 text-xs bg-white"
       >
         <option value="all">All doctors</option>
         {doctorsList.map((doc) => (
@@ -65,7 +65,7 @@ export function PatientFilters({
       <Select
         value={status}
         onChange={(e) => onStatusChange(e.target.value)}
-        className="w-32 text-xs bg-white"
+        className="flex-1 min-w-[110px] sm:w-32 text-xs bg-white"
       >
         <option value="all">All status</option>
         <option value="Admitted">Admitted</option>
@@ -75,21 +75,21 @@ export function PatientFilters({
       </Select>
 
       {onStartDateChange && onEndDateChange && (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 w-full sm:w-auto">
           <Input
             type="date"
             value={startDate}
             onChange={(e) => onStartDateChange(e.target.value)}
             title="Start Date"
-            className="w-36 h-9 text-xs bg-white"
+            className="flex-1 sm:w-36 h-9 text-xs bg-white"
           />
-          <span className="text-xs text-slate-400">to</span>
+          <span className="text-xs text-slate-400 shrink-0">to</span>
           <Input
             type="date"
             value={endDate}
             onChange={(e) => onEndDateChange(e.target.value)}
             title="End Date"
-            className="w-36 h-9 text-xs bg-white"
+            className="flex-1 sm:w-36 h-9 text-xs bg-white"
           />
           {(startDate || endDate) && (
             <button

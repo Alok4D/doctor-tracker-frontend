@@ -11,7 +11,7 @@ export function PatientSearch({ value, onChange }: PatientSearchProps) {
       value={value}
       onChange={onChange}
       placeholder="Search by patient name, phone, condition..."
-      className="max-w-md"
+      className="w-full sm:max-w-md"
     />
   );
 }

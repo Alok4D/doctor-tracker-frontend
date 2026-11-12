@@ -27,11 +27,11 @@ export function DoctorFilters({
   onEndDateChange,
 }: DoctorFiltersProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
       <Select
         value={specialization}
         onChange={(e) => onSpecializationChange(e.target.value)}
-        className="w-44 text-xs bg-white"
+        className="flex-1 min-w-[140px] sm:w-44 text-xs bg-white"
       >
         <option value="all">All specializations</option>
         {DOCTOR_SPECIALIZATIONS.map((spec) => (
@@ -45,7 +45,7 @@ export function DoctorFilters({
         <Select
           value={status}
           onChange={(e) => onStatusChange(e.target.value)}
-          className="w-32 text-xs bg-white"
+          className="flex-1 min-w-[110px] sm:w-32 text-xs bg-white"
         >
           <option value="all">All status</option>
           <option value="Active">Active</option>
@@ -54,21 +54,21 @@ export function DoctorFilters({
       )}
 
       {onStartDateChange && onEndDateChange && (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 w-full sm:w-auto">
           <Input
             type="date"
             value={startDate}
             onChange={(e) => onStartDateChange(e.target.value)}
             title="Start Date"
-            className="w-36 h-9 text-xs bg-white"
+            className="flex-1 sm:w-36 h-9 text-xs bg-white"
           />
-          <span className="text-xs text-slate-400">to</span>
+          <span className="text-xs text-slate-400 shrink-0">to</span>
           <Input
             type="date"
             value={endDate}
             onChange={(e) => onEndDateChange(e.target.value)}
             title="End Date"
-            className="w-36 h-9 text-xs bg-white"
+            className="flex-1 sm:w-36 h-9 text-xs bg-white"
           />
           {(startDate || endDate) && (
             <button
