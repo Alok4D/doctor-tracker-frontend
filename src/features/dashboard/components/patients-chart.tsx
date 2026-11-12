@@ -78,7 +78,7 @@ export function PatientsOverviewChart() {
       </div>
 
       {/* Composed Growth + Daily Volume Chart */}
-      <div className="flex-1 min-h-[330px] w-full pt-5">
+      <div className="h-[265px] w-full pt-4">
         {isLoading || isFetching ? (
           <div className="h-full w-full flex flex-col justify-between py-2">
             <div className="flex-1 flex items-end justify-around gap-3 px-4 pb-4 border-b border-l border-slate-100">

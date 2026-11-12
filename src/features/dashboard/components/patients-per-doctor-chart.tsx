@@ -42,7 +42,7 @@ export function PatientsPerDoctorChart() {
         </div>
       </div>
 
-      <div className="flex-1 min-h-[330px] w-full pt-5">
+      <div className="h-[400px] w-full pt-4">
         {isLoading ? (
           <div className="h-full flex flex-col justify-between py-2">
             <div className="flex-1 flex items-end justify-around gap-4 px-4 pb-3 border-b border-slate-100">
